@@ -59,7 +59,7 @@ s.login(username, password)
 #To Create Email Message in Proper Format
 msg = MIMEMultipart()
 
-## Function that determines who should be coppied on the resulting Email.
+## Function that determines who should be coppied on the resulting Email. And who should be the contact owner in HubSpot
 def censor():
     global bigtrip
 
@@ -92,6 +92,55 @@ def censor():
 
 censor()
 
+#Get the HubSpot Id and assign the contact to the right consultant.
+#Also updates a few other fields.
+import hubspot
+from pprint import pprint
+from hubspot.crm.contacts import SimplePublicObjectInput, ApiException
+
+#Hubspot API Requests
+public_object_search_request = PublicObjectSearchRequest(filter_groups=[{"filters":[{"value":requester,"propertyName":"email","operator":"EQ"}]}])
+simple_public_object_input = SimplePublicObjectInput(properties=properties)
+
+Amy_id = "48087941"
+Porsha_id = "25967362"
+
+try:
+    if bigtrip == "n" or "":
+        search = client.crm.contacts.search_api.do_search(public_object_search_request=public_object_search_request)
+        regex = r"('id': )'([\d]*)"
+        global result
+        result = re.search(regex, search).group(2)
+        print("contact ID is: " + result)
+        
+        properties = {
+            "lifecyclestage": "marketingqualifiedlead",
+            "n2023_account_status": "Customer",
+            "hubspot_owner_id": Porsha_id
+        }
+        
+        update = client.crm.contacts.basic_api.update(contact_id=result, simple_public_object_input=simple_public_object_input)
+        print("Contact has been updated and assigned to Porsha")
+
+    elif bigtrip == "y" or "test":
+        search = client.crm.contacts.search_api.do_search(public_object_search_request=public_object_search_request)
+        regex = r"('id': )'([\d]*)"
+        global result
+        result = re.search(regex, search).group(2)
+        print("contact ID is: " + result)
+        
+        properties = {
+            "lifecyclestage": "marketingqualifiedlead",
+            "n2023_account_status": "Customer",
+            "hubspot_owner_id": Amy_id
+        }
+        
+        update = client.crm.contacts.basic_api.update(contact_id=result, simple_public_object_input=simple_public_object_input)
+        print("Contact has been updated and assigned to Amy")
+
+except ApiException as e:
+    print("Exception when calling search_api->do_search: %s\n" % e)
+
 #Setting Email Parameters
 msg['From'] = "***REMOVED***"
 msg['To'] = ", ".join(recipients)
@@ -101,8 +150,9 @@ msg['Subject'] = f"Performance and Travel Form: Lead #{step} from {requester}"
 data = open("email.html", "r").read()
 
 #Email Body Content
+hubspot_contact_link = f"https://app.hubspot.com/contacts/3057073/contact/{result}"
 sheet_link = f"https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit#gid=1008713311&range=A{step}"
-message = data.format(html_table = html_table, step = step, sheet_link = sheet_link)
+message = data.format(html_table = html_table, step = step, sheet_link = sheet_link, hubspot_contact_link = hubspot_contact_link)
 
 #Add Message To Email Body
 msg.attach(MIMEText(message, 'html'))
@@ -153,3 +203,5 @@ else:
     stepper = open("step.py", "w")
     stepper.write(f"step = {append}")
     stepper.close()
+
+
