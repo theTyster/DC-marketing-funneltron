@@ -106,12 +106,15 @@ try:
         regex = r"('id': )'([\d]*)"
         public_object_search_request = PublicObjectSearchRequest(filter_groups=[{"filters":[{"value":requester,"propertyName":"email","operator":"EQ"}]}])
         hs_search = str(hs_client.crm.contacts.search_api.do_search(public_object_search_request=public_object_search_request))
-        result = re.search(regex, hs_search).group(2)
-        print("contact ID is: " + result)
-        simple_public_object_input = SimplePublicObjectInput(properties=properties)
-        hs_client.crm.contacts.basic_api.update(contact_id=result, simple_public_object_input=simple_public_object_input)
-        print("Contact has been updated and assigned to Porsha")
-
+        try:
+            result = re.search(regex, hs_search).group(2)
+            print("contact ID is: " + result)
+            simple_public_object_input = SimplePublicObjectInput(properties=properties)
+            hs_client.crm.contacts.basic_api.update(contact_id=result, simple_public_object_input=simple_public_object_input)
+            print("Contact has been updated and assigned to Porsha")
+        except AttributeError:
+            print(f"""**********BZZZZZZZZZZZTT**********\nContact does not exist in Hubspot try searching for them at the link below: \n https://app.hubspot.com/contacts/3057073/objects/0-1/views/all/list?query={requester}\n**********THATS AN ERROR**********""")
+            exit()
     elif bigtrip == "y" or "test":
         properties = {
             "lifecyclestage": "marketingqualifiedlead",
@@ -121,12 +124,15 @@ try:
         regex = r"('id': )'([\d]*)"
         public_object_search_request = PublicObjectSearchRequest(filter_groups=[{"filters":[{"value":requester,"propertyName":"email","operator":"EQ"}]}])
         hs_search = str(hs_client.crm.contacts.search_api.do_search(public_object_search_request=public_object_search_request))
-        result = re.search(regex, hs_search).group(2)
-        print("contact ID is: " + result)
-        simple_public_object_input = SimplePublicObjectInput(properties=properties)
-        hs_client.crm.contacts.basic_api.update(contact_id=result, simple_public_object_input=simple_public_object_input)
-        print("Contact has been updated and assigned to Amy")
-
+        try:
+            result = re.search(regex, hs_search).group(2)
+            print("contact ID is: " + result)
+            simple_public_object_input = SimplePublicObjectInput(properties=properties)
+            hs_client.crm.contacts.basic_api.update(contact_id=result, simple_public_object_input=simple_public_object_input)
+            print("Contact has been updated and assigned to Amy")
+        except AttributeError:
+            print(f"""**********BZZZZZZZZZZZTT**********\nContact does not exist in Hubspot try searching for them at the link below: \n https://app.hubspot.com/contacts/3057073/objects/0-1/views/all/list?query={requester}\n**********THATS AN ERROR**********""")
+            exit()
 except ApiException as e:
     print("Exception when calling Hubspot API: %s\n" % e)
 
