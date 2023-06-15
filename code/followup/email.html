@@ -2,7 +2,7 @@
 <html>
 <head>
 <style>
-button {{
+form  input {{
 	background-color: darkblue;
 	color: white;
 	padding: 7px;
@@ -20,8 +20,12 @@ button {{
 </head>
 <body>
 <h1>The Google Form "Performance and Travel" received a new submission!</h1><br>
-<p><a href="https://docs.google.com/forms/d/1b3wDerCr7vUCwbQ3sIulGc44_wYqAVJDLgha3ifSwhA/edit"><button>View the Google Form this came from.</button></a></p>
-<p><a href="https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit?usp=sharing"><button>View the spreadsheet data.</button></a></p>
+<form action="https://docs.google.com/forms/d/1b3wDerCr7vUCwbQ3sIulGc44_wYqAVJDLgha3ifSwhA/edit#responses">
+	<input type="submit" value="View the Google Form this came from." /> 
+</form>
+<form action="https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit">
+	<input type="submit" value="View the spreadsheet data." /> 
+</form>
 <br>
 <br>
 <div class="data">
@@ -38,10 +42,7 @@ button {{
     <li>Building #{step}</li>
     <li>Sent #{step}</li>
     <li>Signed #{step}</li>
-    <li>Lost #{step}</li>
-    <li>Contacted #{step}</li>
-</ul>
-<p>Corey will then update the Google Sheet with the correct color. You are welcome to view the <a href="https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit?usp=sharing">spreadsheet</a> anytime to view your overall progress with these tasks.</p>
+    <li>Lost #{step}</li> <li>Contacted #{step}</li> </ul> <p>Corey will then update the Google Sheet with the correct color. You are welcome to view the <a href="https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit?usp=sharing">spreadsheet</a> anytime to view your overall progress with these tasks.</p>
 <p>A few things to note about corey:</p>
 <ul>
     <li>Responses do not need to be case-sensitive. They do need to be spelled and spaced correctly and include the '#'.</li>

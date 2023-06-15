@@ -122,9 +122,12 @@ set_with_dataframe(ws, sorter, row=append, col=3, include_index=False, include_c
 
 
 # Colors the row the appropriate color
-gray = cellFormat(backgroundColor=color(0.7176470588235294,0.7176470588235294,0.7176470588235294))
-format_cell_range(ws, f"A{append}:AVU{append}", gray)
-
+if bigtrip == "n" or "test":
+    gray = cellFormat(backgroundColor=color(0.7176470588235294,0.7176470588235294,0.7176470588235294))
+    format_cell_range(ws, f"A{append}:AVU{append}", gray)
+elif bigtrip == "y":
+    gray = cellFormat(backgroundColor=color(0.6,0.6,0.6))
+    format_cell_range(ws, f"A{append}:AVU{append}", gray)
 
 # Move a cell from one sheet to another with A1 Notation.
 mover = ws_live.acell('B2').value
