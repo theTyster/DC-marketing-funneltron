@@ -15,8 +15,6 @@ def read():
     from email.header import decode_header
     import re
     from auth import username, password
-    from step import step
-
 
     #Creds
     

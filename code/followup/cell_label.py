@@ -5,7 +5,6 @@ import gspread
 from auth import *
 from gspread_formatting import *
 import read_email
-from step import step
 import re
 
 #Naming and gaining access to a specific workbook and specific sheets within that workbook.
