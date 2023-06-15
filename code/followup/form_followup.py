@@ -63,7 +63,7 @@ msg = MIMEMultipart()
 def censor():
     global bigtrip
 
-    bigtrip = input("Is this a team 3 form?(y/N/test) \n")
+    bigtrip = input("Is this a team 3 form? (y/N/test) \n")
 
     global recipients
 
@@ -123,15 +123,15 @@ append = step
 sorter = values.unstack().to_frame().T
 set_with_dataframe(ws, sorter, row=append, col=3, include_index=False, include_column_header=False)
 
-
+print(bigtrip)
 # Colors the row the appropriate color
-if bigtrip == "n" or "test":
+if bigtrip == "n" or "":
     gray = cellFormat(backgroundColor=color(0.7176470588235294,0.7176470588235294,0.7176470588235294))
     Porsha_yellow = cellFormat(backgroundColor=color(0.9450980392156862,0.7607843137254902,0.19607843137254902))
     format_cell_range(ws, f"B{append}:AVU{append}", gray)
     ws.update(f"A{step}", "Porsha")
     format_cell_range(ws, f"A{step}", Porsha_yellow)
-elif bigtrip == "y":
+elif bigtrip == "y" or "test":
     gray = cellFormat(backgroundColor=color(0.7176470588235294,0.7176470588235294,0.7176470588235294))
     Amy_blue = cellFormat(backgroundColor=color(0.43529411764705883,0.6588235294117647,0.8627450980392157))
     format_cell_range(ws, f"B{append}:AVU{append}", gray)
