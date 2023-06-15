@@ -1,1 +1,2 @@
-step = 85
+stepp = 72
+stepa = 20
