@@ -3,11 +3,8 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive.file','https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name('/Users/tydavis/Documents/code/Work/Python/DC-Marketing-Funneltron/code/gsheet-cred.json', scope)
-client = gspread.authorize(creds)
-
-#------------------
+#gaining access and credentials Google drive and Google sheets
+from auth import *
 
 import numpy as np
 import pandas as pd
@@ -23,14 +20,17 @@ ws = client.open('Marching Championship Form (Responses)').worksheet(ws2)
 # assigns a row into a Panda data frame.
 values = pd.DataFrame(ws_live.row_values(2))
 
-# remove all empty values from data frame by replacing them with NaN and then dropping all cells with Nan value. idk what inplace=True means.
+
+# remove all empty values from data frame by replacing them with NaN and then dropping all cells with Nan value. inplace=True specifies that the cells will be replaced as opposed to appended I guess.
 values[0].replace('', np.nan, inplace=True)
 values.dropna(subset=[0], inplace=True)
 
 # drop indices. So that "values" is only the raw data formatted as a list.
 values = values.drop(values.index[0])
 
-html_table = values.style.hide_columns().hide_index().render()
+# add a column header, hide the index, and export to HTML
+values.rename(columns = {0:"<p style='color: darkorange;'>Marching Championship Form Response:</p>"}, inplace=True)
+html_table = values.style.hide().to_html()
 #------------------
 
 import smtplib
@@ -44,7 +44,7 @@ s = smtplib.SMTP('smtp-mail.outlook.com', 587)
 s.starttls()
 
 #Login Using Your Email ID & Password
-s.login("***REMOVED***", "***REMOVED***")
+s.login("username", "password")
 
 #To Create Email Message in Proper Format
 msg = MIMEMultipart()
@@ -112,13 +112,6 @@ Hit "reply all" if you have questions regarding this email.<p>
 <br>
 ---------------------END FORM RESPONSE---------------------
 """
-# Asks for a number and checks if a number was given through input.
-#x=input("Which row would you like to send? ")
-#try:
-#    val = int(x)
-#except ValueError:
-#    print("That's not an int!")
-
 
 #Add Message To Email Body
 msg.attach(MIMEText(message, 'html'))
@@ -151,10 +144,6 @@ format_cell_range(ws, f"A{append}:AVU{append}", gray)
 # Move a cell from one sheet to another with A1 Notation.
 mover = ws_live.acell('B2').value
 ws.update(f'B{append}', mover)
-
-# Move a row from one sheet to the other with in a certain range of columns
-#mover = ws_live.row_values(2)
-#ws.append_row(mover, table_range="B")
 
 # Deletes the copied row mentioned in line 87 from ws1
 ws_live.delete_rows(2, 2)
