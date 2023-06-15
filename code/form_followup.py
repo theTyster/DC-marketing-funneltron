@@ -3,11 +3,8 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
-scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive.file','https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name('/Users/tydavis/Documents/Atom/Work/Python/gsheet-cred.json', scope)
-client = gspread.authorize(creds)
-
-#------------------
+#gaining access and credentials Google drive and Google sheets
+from auth import *
 
 import numpy as np
 import pandas as pd
@@ -17,8 +14,8 @@ from gspread_dataframe import get_as_dataframe, set_with_dataframe
 ws1 = 'Form Responses (Do not Edit)'
 ws2 = 'Form Responses (Current)'
 
-ws_live = client.open('Request Form follow Ups (Responses)').worksheet(ws1)
-ws = client.open('Request Form follow Ups (Responses)').worksheet(ws2)
+ws_live = client.open('Performance and Travel Form (Responses)').worksheet(ws1)
+ws = client.open('Performance and Travel Form (Responses)').worksheet(ws2)
 
 # assigns a row into a Panda data frame.
 values = pd.DataFrame(ws_live.row_values(2))
@@ -44,7 +41,7 @@ s = smtplib.SMTP('smtp-mail.outlook.com', 587)
 s.starttls()
 
 #Login Using Your Email ID & Password
-s.login("***REMOVED***", "***REMOVED***")
+s.login(username, password)
 
 #To Create Email Message in Proper Format
 msg = MIMEMultipart()
@@ -58,19 +55,23 @@ def censor():
 
     if bigtrip == "y":
     
-        recipients = ["***REMOVED***", "***REMOVED***@***REMOVED***.com", "***REMOVED***", "leanna.perez@***REMOVED***.com"]
+        recipients = ["***REMOVED***", "***REMOVED***@***REMOVED***.com", "***REMOVED***"]
         print("Sending to Ty, Jon and Porsha")
     
     elif bigtrip == "n":
     
-        recipients = ["***REMOVED***", "***REMOVED***", "leanna.perez@***REMOVED***.com"]
-        print("Sending to Ty, Porsha and Leanna")
+        recipients = ["***REMOVED***", "***REMOVED***"]
+        print("Sending to Ty, Porsha")
 
     elif bigtrip == "":
 
         recipients = ["***REMOVED***", "***REMOVED***"]
         print("Sending to Ty and Porsha")
     
+    elif bigtrip == "test":
+        recipients =["***REMOVED***"]
+        print("Sending you a test email")
+
     else:
         print("input is not recognized")
         censor()
@@ -80,21 +81,15 @@ censor()
 #Setting Email Parameters
 msg['From'] = "***REMOVED***"
 msg['To'] = ", ".join(recipients)
-msg['Subject'] = "New Proposal Request"
+msg['Subject'] = "Performance and Travel Form: New request for a proposal"
 
 #Email Body Content
 message = f"""
-<h1>The Google Form "Lets Get a Few More Details..." received a new submission!</h1><br>
+<h1>The Google Form "Performance and Travel" received a new submission!</h1><br>
 <p>The details submitted are below.<br>
 Hit "reply all" if you have questions regarding this email.<p>
 <p>Click here to view the <a href="https://docs.google.com/forms/d/1b3wDerCr7vUCwbQ3sIulGc44_wYqAVJDLgha3ifSwhA/edit"><b>Google Form</b></a> this came from.</p>
 <p>Click here to view the <a href="https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit?usp=sharing">spreadsheet data.</a></p>
-<br>
---------------------START FORM RESPONSE--------------------
-<br>
-<p>&nbsp;</p>
-{html_table}
-<br>
 <br>
 <br>
 <h4> If you are working on this registration update the status of it by "Replying to All" with:</h4>
@@ -103,6 +98,13 @@ Hit "reply all" if you have questions regarding this email.<p>
     <li>Sent</li>
 </ul>
 <p>This will help ensure that we do not have multiple people working on the same registration. Contact <a href="mailto:***REMOVED***">Ty</a> if you have any suggestions or questions.</p>
+<br>
+--------------------START FORM RESPONSE--------------------
+<br>
+<p>&nbsp;</p>
+{html_table}
+<br>
+----------------------END FORM RESPONSE--------------------
 """
 # Asks for a number and checks if a number was given through input.
 #x=input("Which row would you like to send? ")
@@ -123,11 +125,24 @@ s.quit()
 
 
 #------------------
+from gspread_formatting import *
 
 # Sort the abridged Data frame from line 28 and copies it into a different sheet at a specified location and without headers or indices.
 append = int(input(f"""What row would you  like to append the Data to in '{ws2}'? """))
 sorter = values.unstack().to_frame().T
 set_with_dataframe(ws, sorter, row=append, col=3, include_index=False, include_column_header=False)
+
+
+# Colors the row the appropriate color
+red = cellFormat(backgroundColor=color(255,0,0))
+orange = cellFormat(backgroundColor=color(246,178,107))
+yellow = cellFormat(backgroundColor=color(255,229,103))
+green = cellFormat(backgroundColor=color(147,196,125))
+purple = cellFormat(backgroundColor=color(194,123,160))
+gray = cellFormat(backgroundColor=color(100, 100, 100))
+
+format_cell_range(ws, f"A{append}:AVU{append}", gray)
+
 
 # Move a cell from one sheet to another with A1 Notation.
 mover = ws_live.acell('B2').value
