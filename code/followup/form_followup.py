@@ -63,7 +63,7 @@ msg = MIMEMultipart()
 def censor():
     global bigtrip
 
-    bigtrip = input("Is this a team 3 form? (y/N/test) \n")
+    bigtrip = input("Is this a team 3 form? (y/n/test) \n")
 
     global recipients
 
@@ -77,11 +77,6 @@ def censor():
         recipients = ["***REMOVED***", "***REMOVED***"]
         print("Sending to Ty, Porsha")
 
-    elif bigtrip == "":
-
-        recipients = ["***REMOVED***", "***REMOVED***"]
-        print("Sending to Ty and Porsha")
-    
     elif bigtrip == "test":
         recipients =["***REMOVED***"]
         print("Sending you a test email")
@@ -95,51 +90,45 @@ censor()
 #Get the HubSpot Id and assign the contact to the right consultant.
 #Also updates a few other fields.
 import hubspot
-from pprint import pprint
-from hubspot.crm.contacts import SimplePublicObjectInput, ApiException
-
-#Hubspot API Requests
-public_object_search_request = PublicObjectSearchRequest(filter_groups=[{"filters":[{"value":requester,"propertyName":"email","operator":"EQ"}]}])
-simple_public_object_input = SimplePublicObjectInput(properties=properties)
+from hubspot.crm.contacts import SimplePublicObjectInput, ApiException, PublicObjectSearchRequest
+import re
 
 Amy_id = "48087941"
 Porsha_id = "25967362"
 
 try:
-    if bigtrip == "n" or "":
-        search = client.crm.contacts.search_api.do_search(public_object_search_request=public_object_search_request)
-        regex = r"('id': )'([\d]*)"
-        global result
-        result = re.search(regex, search).group(2)
-        print("contact ID is: " + result)
-        
+    if bigtrip == "n": 
         properties = {
             "lifecyclestage": "marketingqualifiedlead",
             "n2023_account_status": "Customer",
             "hubspot_owner_id": Porsha_id
         }
-        
-        update = client.crm.contacts.basic_api.update(contact_id=result, simple_public_object_input=simple_public_object_input)
+        regex = r"('id': )'([\d]*)"
+        public_object_search_request = PublicObjectSearchRequest(filter_groups=[{"filters":[{"value":requester,"propertyName":"email","operator":"EQ"}]}])
+        hs_search = str(hs_client.crm.contacts.search_api.do_search(public_object_search_request=public_object_search_request))
+        result = re.search(regex, hs_search).group(2)
+        print("contact ID is: " + result)
+        simple_public_object_input = SimplePublicObjectInput(properties=properties)
+        hs_client.crm.contacts.basic_api.update(contact_id=result, simple_public_object_input=simple_public_object_input)
         print("Contact has been updated and assigned to Porsha")
 
     elif bigtrip == "y" or "test":
-        search = client.crm.contacts.search_api.do_search(public_object_search_request=public_object_search_request)
-        regex = r"('id': )'([\d]*)"
-        global result
-        result = re.search(regex, search).group(2)
-        print("contact ID is: " + result)
-        
         properties = {
             "lifecyclestage": "marketingqualifiedlead",
             "n2023_account_status": "Customer",
             "hubspot_owner_id": Amy_id
         }
-        
-        update = client.crm.contacts.basic_api.update(contact_id=result, simple_public_object_input=simple_public_object_input)
+        regex = r"('id': )'([\d]*)"
+        public_object_search_request = PublicObjectSearchRequest(filter_groups=[{"filters":[{"value":requester,"propertyName":"email","operator":"EQ"}]}])
+        hs_search = str(hs_client.crm.contacts.search_api.do_search(public_object_search_request=public_object_search_request))
+        result = re.search(regex, hs_search).group(2)
+        print("contact ID is: " + result)
+        simple_public_object_input = SimplePublicObjectInput(properties=properties)
+        hs_client.crm.contacts.basic_api.update(contact_id=result, simple_public_object_input=simple_public_object_input)
         print("Contact has been updated and assigned to Amy")
 
 except ApiException as e:
-    print("Exception when calling search_api->do_search: %s\n" % e)
+    print("Exception when calling Hubspot API: %s\n" % e)
 
 #Setting Email Parameters
 msg['From'] = "***REMOVED***"
@@ -173,9 +162,8 @@ append = step
 sorter = values.unstack().to_frame().T
 set_with_dataframe(ws, sorter, row=append, col=3, include_index=False, include_column_header=False)
 
-print(bigtrip)
 # Colors the row the appropriate color
-if bigtrip == "n" or "":
+if bigtrip == "n":
     gray = cellFormat(backgroundColor=color(0.7176470588235294,0.7176470588235294,0.7176470588235294))
     Porsha_yellow = cellFormat(backgroundColor=color(0.9450980392156862,0.7607843137254902,0.19607843137254902))
     format_cell_range(ws, f"B{append}:AVU{append}", gray)

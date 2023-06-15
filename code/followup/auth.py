@@ -1,5 +1,6 @@
 from oauth2client.service_account import ServiceAccountCredentials
 import gspread
+import hubspot
 
 
 feed_auth = 'https://spreadsheets.google.com/feeds'
@@ -16,4 +17,4 @@ client = gspread.authorize(creds)
 username = "***REMOVED***"
 password = "***REMOVED***"
 
-client = hubspot.Client.create(api_key="661a652d-8ac7-4471-859f-dd3fa4364dc9")
+hs_client = hubspot.Client.create(api_key="661a652d-8ac7-4471-859f-dd3fa4364dc9")

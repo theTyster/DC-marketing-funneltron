@@ -2,18 +2,52 @@
 <html>
 <head>
 <style>
-form  input {{
+
+body {{
+	width: auto;
+	margin-left: 25%;
+	margin-right: 25%;
+
+}}
+.g-form {{
 	background-color: darkblue;
 	color: white;
 	padding: 7px;
 	border-radius: 10px;
 	border: solid 1px lightblue;
+	width: 400px;
+	margin-left: 25%;
+	margin-right: 25%;
+}}
+.g-sheet {{
+	background-color: darkgreen;
+	color: white;
+	padding: 7px;
+	border-radius: 10px;
+	border: solid 1px lightblue;
+	width: 400px;
+	margin-left: 25%;
+	margin-right: 25%;
+}}
+.hubspot {{
+	background-color: darkorange;
+	color: white;
+	padding: 7px;
+	border-radius: 10px;
+	border: solid 1px lightblue;
+	width: 400px;
+	margin-left: 25%;
+	margin-right: 25%;
 }}
 .data {{
 	background-color: lightblue;
 	border-radius: 10px;
 	width:auto;
 	max-width: 800px;
+	margin-left: 10%;
+	margin-right: 10%;
+	padding: 15px;
+	background: linear-gradient(135deg,#f8fcfd,#dff0f9)
 }}
 
 </style>
@@ -21,13 +55,13 @@ form  input {{
 <body>
 <h1>The Google Form "Performance and Travel" received a new submission!</h1><br>
 <form action="https://docs.google.com/forms/d/1b3wDerCr7vUCwbQ3sIulGc44_wYqAVJDLgha3ifSwhA/edit#responses">
-	<input type="submit" value="View the Google Form this came from." /> 
+	<input class="g-form" type="submit" value="View the Google Form this came from." /> 
 </form>
 <form action={sheet_link}>
-	<input type="submit" value="View the spreadsheet data." /> 
+	<input class="g-sheet" type="submit" value="View the spreadsheet data." /> 
 </form>
 <form action={hubspot_contact_link}>
-	<input type="submit" value="View this contact's email correspondance in Hubspot" />
+	<input class="hubspot" type="submit" value="View this contact's email correspondance in Hubspot" />
 </form>
 <br>
 <br>
