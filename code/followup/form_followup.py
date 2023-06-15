@@ -126,8 +126,16 @@ message = f"""
 <ul>
     <li>Responses do not need to be case-sensitive. They do need to be spelled and spaced correctly and include the '#'.</li>
     <li>Responses do not need to be to this thread. You can email Corey from any email address or CC him on any thread and he will mark the correct line.</li>
+    <li>Responses do not need to be sent one at a time. Corey can update the status of multiple proposals in the Sheet from one email.</li>
+        <ul>
+        <li>EX:<br>
+        BUildinG #38<br>
+        sent #40<br>
+        Corey will mark both lines their designated colors.</li>
+        </ul>
     <li>To reset the color back to gray for "Needs a Quote" just reply "reset #{step}".</li>
     <li>Try to be patient with Corey. He is a little slow. Sometimes it may take a few hours for the Google sheet to update with the right color. He will get to it eventually.</li>
+    <li>Don't forward emails to Corey. He doesn't like it.</li>
 </ul>
 <br>
 <p>Contact <a href="mailto:***REMOVED***">Ty</a> if you have any suggestions or questions.</p>

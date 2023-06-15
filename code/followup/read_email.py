@@ -6,7 +6,8 @@
 # cleantext for creating a folder this line is a function that creates folders without spaces and special characters.
 #def clean(text):
 #        return "".join(c if c.isalnum() else "_" for c in text)
-
+body = None
+plain_body = None
 def read():
 
 
@@ -55,8 +56,14 @@ def read():
                     #extract content type of the email              
                     content_type = msg.get_content_type()           
                     if content_type == "text/plain":                
-                        pass
-    
+                        global plain_body
+                        plain_body = msg.get_payload(decode=True).decode()
+
     imap.close()
     imap.logout()
-
+    
+#read()
+#try:
+#    print(body)
+#except:
+#    print(plain_body)
