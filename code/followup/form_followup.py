@@ -1,4 +1,9 @@
 #! python3
+"""
+This sheet pulls responses from the google form, condenses them into a dataframe and then 
+emails the details to the people inputted and changes the color on the google sheet.
+It then Increments the step.
+"""
 
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -19,6 +24,7 @@ ws = client.open('Performance and Travel Form (Responses)').worksheet(ws2)
 
 # assigns a row into a Panda data frame.
 values = pd.DataFrame(ws_live.row_values(2))
+requester = ws_live.acell('C2').value
 
 # remove all empty values from data frame by replacing them with NaN and then dropping all cells with Nan value. inplace=True specifies that the cells will be replaced as opposed to appended I guess.
 values[0].replace('', np.nan, inplace=True)
@@ -87,7 +93,7 @@ censor()
 #Setting Email Parameters
 msg['From'] = "***REMOVED***"
 msg['To'] = ", ".join(recipients)
-msg['Subject'] = "Performance and Travel Form: New request for a proposal"
+msg['Subject'] = f"Performance and Travel Form: Lead #{step} from {requester}"
 
 #Email Body Content
 message = f"""
@@ -105,7 +111,7 @@ message = f"""
 <br>
 <br>
 <h2>Meet Corey the Python</h2><br>
-<img src="https://storage.googleapis.com/dc-website-assets/2022/06/3867da91-corey-python.png" style="width: 300px;"><br>
+<img src="https://iili.io/jNNaDl.png" style="width: 400px;"><br>
 <p>Corey is here to help you keep your tasks organized.</p>
 <h4> If you are working on this registration update the status of it by "Replying to All" with:</h4>
 <ul>
@@ -147,7 +153,7 @@ set_with_dataframe(ws, sorter, row=append, col=3, include_index=False, include_c
 
 
 # Colors the row the appropriate color
-gray = cellFormat(backgroundColor=color(100, 100, 100))
+gray = cellFormat(backgroundColor=color(0.7176470588235294,0.7176470588235294,0.7176470588235294))
 format_cell_range(ws, f"A{append}:AVU{append}", gray)
 
 

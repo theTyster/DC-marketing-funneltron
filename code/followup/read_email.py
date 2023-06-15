@@ -1,9 +1,7 @@
 #! python3
+#This file provides the function that opens the first email in ***REMOVED***'s inbox and then returns body as a variable.#It is used by cell_label.py
 
 # followed the guide at www.thepythoncode.com/article/reading-emails-in-python
-
-
-
 
 # cleantext for creating a folder this line is a function that creates folders without spaces and special characters.
 #def clean(text):
@@ -16,7 +14,9 @@ def read():
     import email
     from email.header import decode_header
     import re
-    from auth.py import username, password
+    from auth import username, password
+    from step import step
+
 
     #Creds
     
@@ -53,36 +53,12 @@ def read():
                             pass
                         if content_type == "text/plain" and "attachment" not in content_disposition:
                             pass
-                        #print(body)
                 else:
                     #extract content type of the email              
                     content_type = msg.get_content_type()           
                     if content_type == "text/plain":                
                         pass
-                    #print(body)                                
-    
     
     imap.close()
     imap.logout()
-    
-    
-    match = re.search('WORKING', str(body), re.IGNORECASE)
-    
-    
-    
-    if match:
-        print('itfreakinworked.jpg')
-    
-    else:
-        print("uuuhhhhhh")
-    
-    '''
-    At this point I need to update the form.py scripts to print out the line number along with the instructions on how to respond to the email correctly.
 
-    then I need to create and If/then statement in this file that will iterate over every possible response and label the gsheet accordingly.
-
-
-    '''
-    
-    
-read()
