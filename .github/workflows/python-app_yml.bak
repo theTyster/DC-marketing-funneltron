@@ -20,4 +20,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run email checker and labeller and archiver
       run: |
-        cd code/followup; python cell_label.py
+        cd code; python cell_label.py

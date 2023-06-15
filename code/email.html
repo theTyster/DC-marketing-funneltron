@@ -5,16 +5,20 @@
 
 body {{
 	width: auto;
+	background: conic-gradient(from 180deg at 50% 33%, #b1ecff, 120deg, #b1c5ff, 240deg, #b1ffeb, 350deg, #b1ecff);
 	margin-left: 25%;
 	margin-right: 25%;
-
+}}
+.email {{ 
+	padding: 50px;
+	background-color: white;
+	border-radius: 10px;
 }}
 .g-form {{
 	background-color: darkblue;
 	color: white;
 	padding: 7px;
 	border-radius: 10px;
-	border: solid 1px lightblue;
 	width: 400px;
 	margin-left: 25%;
 	margin-right: 25%;
@@ -24,7 +28,6 @@ body {{
 	color: white;
 	padding: 7px;
 	border-radius: 10px;
-	border: solid 1px lightblue;
 	width: 400px;
 	margin-left: 25%;
 	margin-right: 25%;
@@ -34,35 +37,35 @@ body {{
 	color: white;
 	padding: 7px;
 	border-radius: 10px;
-	border: solid 1px lightblue;
 	width: 400px;
 	margin-left: 25%;
 	margin-right: 25%;
 }}
 .data {{
-	background-color: lightblue;
+	background-color: #c1a8d3;
 	border-radius: 10px;
 	width:auto;
 	max-width: 800px;
 	margin-left: 10%;
 	margin-right: 10%;
 	padding: 15px;
-	background: linear-gradient(135deg,#f8fcfd,#dff0f9)
+	background: linear-gradient(135deg,#f1ecf5,#d9cce4)
 }}
 
 </style>
 </head>
 <body>
-<h1>The Google Form "Performance and Travel" received a new submission!</h1><br>
-<h2>{school}</h2>
+<div class="email">
+<h1>We have a new lead!</h1><br>
+<h2 style="text-align: center;">{school}</h2>
 <form action="https://docs.google.com/forms/d/1b3wDerCr7vUCwbQ3sIulGc44_wYqAVJDLgha3ifSwhA/edit#responses">
-	<input class="g-form" type="submit" value="View the Google Form this came from." /> 
+	<input class="g-form" type="submit" value="View the Google Form" /> 
 </form>
 <form action={sheet_link}>
-	<input class="g-sheet" type="submit" value="View the spreadsheet data." /> 
+	<input class="g-sheet" type="submit" value="View the spreadsheet data" /> 
 </form>
 <form action={hubspot_contact_link}>
-	<input class="hubspot" type="submit" value="View this contact's email correspondance in Hubspot" />
+	<input class="hubspot" type="submit" value="View this contact in Hubspot" />
 </form>
 <br>
 <br>
@@ -75,30 +78,21 @@ body {{
 <br>
 <h2>Meet Corey the Python</h2><br>
 <img src="https://iili.io/jNNaDl.png" style="width: 400px;"><br>
-<p>Corey is here to help you keep your tasks organized.</p>
-<h4> If you are working on this registration update the status of it by "Replying to All" with:</h4>
+<h4> If you are working on this registration update the status of it by emailing Corey with:</h4>
 <ul>
     <li>Building #{step}</li>
     <li>Sent #{step}</li>
     <li>Signed #{step}</li>
     <li>Lost #{step}</li> <li>Contacted #{step}</li> </ul> 
-<p>Corey will then update the Google Sheet with the correct color. You are welcome to view the <a href={sheet_link}>spreadsheet</a> anytime to view your overall progress with these tasks.</p>
 <p>A few things to note about Corey:</p>
 <ul>
-    <li>Responses do not need to be case-sensitive. They do need to be spelled and spaced correctly and include the '#'.</li>
-    <li>Responses do not need to be to this thread. You can email Corey from any email address or CC him on any thread and he will mark the correct line.</li>
-    <li>Responses do not need to be sent one at a time. Corey can update the status of multiple proposals in the Sheet from one email.</li>
-        <ul>
-        <li>EX:<br>
-        BUildinG #38<br>
-        sent #40<br>
-        Corey will mark both lines their designated colors.</li>
-        </ul>
+    <li>Responses need to be spelled and spaced correctly and include the '#'.</li>
     <li>To reset the color back to gray for "Needs a Quote" just reply "reset #{step}".</li>
     <li>Corey only works twice a day. Once at 11am and once at 3pm. He will only update the sheet at these times.</li>
     <li>Don't forward emails to Corey. He doesn't like it.</li>
 </ul>
 <br>
 <p>Contact <a href="mailto:***REMOVED***">Ty</a> if you have any suggestions or questions.</p>
+</div>
 </body>
 </html>
