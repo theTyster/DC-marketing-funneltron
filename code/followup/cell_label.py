@@ -31,13 +31,6 @@ green = cellFormat(backgroundColor=color(0.5764705882352941,0.7686274509803922,0
 purple = cellFormat(backgroundColor=color(0.7607843137254902,0.4823529411764706,0.6274509803921569))
 gray = cellFormat(backgroundColor=color(0.7176470588235294,0.7176470588235294,0.7176470588235294))
 
-#Keywords to be searched in emails
-building = 'BUILDING'
-sent = 'SENT'
-signed = 'SIGNED'
-lost = 'LOST'
-contacted = 'CONTACTED'
-reset = 'RESET'
 
 def error_msg(message):
 
@@ -102,10 +95,10 @@ class unquote:
 #Sends an email if there is an error.
 def paint(line, status, color, amy_true, body, regex):
     if amy_true is True:
-        format_cell_range(wsa, f"B{line}:AVU{line}", color)
+        format_cell_range(wsa, f"A{line}:AVU{line}", color)
         print(f"Marking line #{line} as {status}")
     elif amy_true is False:
-        format_cell_range(wsp, f"B{line}:AVU{line}", color)
+        format_cell_range(wsp, f"A{line}:AVU{line}", color)
         print(f"Marking line #{line} as {status}")
     else:
         amy_true = str(amy_true)
@@ -124,7 +117,7 @@ def paint(line, status, color, amy_true, body, regex):
         error_msg(error)
         print("There was an error reading the contents of the message. An email notification has been sent.")
         exit()
-    
+
 
 '''
 Considers whether anyone of the keywords listed above are in the email. 
@@ -132,7 +125,17 @@ If there exists one of the keywords it finds the designated line Number next to 
 It then passes the line number on to paint() and designates the color it should be painted.
 '''
 def highlighter(body_type):
+
+    #Keywords to be searched in emails
+    building = 'BUILDING #'
+    sent = 'SENT #'
+    signed = 'SIGNED #'
+    lost = 'LOST #'
+    contacted = 'CONTACTED #'
+    reset = 'RESET #'
+
     if re.search(building, str(body_type), re.IGNORECASE):
+        building = 'BUILDING'
         what_row_regex = r'#(\d\d?\d?)'
         amy_regex = r"***REMOVED***"
         regex ='<br>' + what_row_regex + '<br>' + amy_regex
@@ -141,54 +144,60 @@ def highlighter(body_type):
         paint(line, building, yellow, amy_consultant, body_type, regex)
     else: 
         pass
-        
+
     if re.search(sent, str(body_type), re.IGNORECASE):
-        what_row_regex = '#(\d\d?\d?)'
+        sent = 'SENT'
+        what_row_regex = r'#(\d\d?\d?)'
         amy_regex = r"***REMOVED***"
         regex ='<br>' + what_row_regex + '<br>' + amy_regex
         line = re.search(sent + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
+        #line = re.compile(body_type, re.I).match(sent + ' ' + what_row_regex).group(1)
         amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
-        paint(line, sent, yellow, amy_consultant, body_type, regex)
+        paint(line, sent, orange, amy_consultant, body_type, regex)
     else: 
         pass
 
     if re.search(signed, str(body_type), re.IGNORECASE):
-        what_row_regex = '#(\d\d?\d?)'
+        signed = 'SIGNED'
+        what_row_regex =r'#(\d\d?\d?)'
         amy_regex = r"***REMOVED***"
         regex ='<br>' + what_row_regex + '<br>' + amy_regex
         line = re.search(signed + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
         amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
-        paint(line, signed, yellow, amy_consultant, body_type, regex)
+        paint(line, signed, green, amy_consultant, body_type, regex)
     else: 
         pass
 
     if re.search(lost, str(body_type), re.IGNORECASE):
-        what_row_regex = '#(\d\d?\d?)'
+        lost = 'LOST'
+        what_row_regex =r'#(\d\d?\d?)'
         amy_regex = r"***REMOVED***"
         regex ='<br>' + what_row_regex + '<br>' + amy_regex
         line = re.search(lost + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
         amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
-        paint(line, lost, yellow, amy_consultant, body_type, regex)
+        paint(line, lost, red, amy_consultant, body_type, regex)
     else: 
         pass
-        
+
     if re.search(contacted, str(body_type), re.IGNORECASE):
-        what_row_regex = '#(\d\d?\d?)'
+        contacted = 'CONTACTED'
+        what_row_regex =r'#(\d\d?\d?)'
         amy_regex = r"***REMOVED***"
         regex ='<br>' + what_row_regex + '<br>' + amy_regex
         line = re.search(contacted + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
         amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
-        paint(line, contacted, yellow, amy_consultant, body_type, regex)
+        paint(line, contacted, purple, amy_consultant, body_type, regex)
     else: 
         pass
 
     if re.search(reset, str(body_type), re.IGNORECASE):
-        what_row_regex = '#(\d\d?\d?)'
+        reset = 'RESET'
+        what_row_regex =r'#(\d\d?\d?)'
         amy_regex = r"***REMOVED***"
         regex ='<br>' + what_row_regex + '<br>' + amy_regex
         line = re.search(reset + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
         amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
-        paint(line, reset, yellow, amy_consultant, body_type, regex)
+        paint(line, reset, gray, amy_consultant, body_type, regex)
     else: 
         pass
 
@@ -235,3 +244,10 @@ except TypeError:
     print("No HTML emails")
 except UnboundLocalError: 
     pass
+
+
+#Changes the values of the bottom-most cells so that the color updater will work.
+wsp.update('C150', ' ')
+wsp.update('C150', '')
+wsa.update('C150', ' ')
+wsa.update('C150', '')
