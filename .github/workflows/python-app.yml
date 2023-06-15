@@ -21,12 +21,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run email checker
       run: |
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        code/tester.py
-=======
         cd code; python tester.py
->>>>>>> Stashed changes
-=======
-        cd code; python tester.py
->>>>>>> Stashed changes
