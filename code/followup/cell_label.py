@@ -115,24 +115,38 @@ def highlighter(body_type):
         pass
 
 #pulls the body from the first email in the inbox
-read_email.read()
 
 '''
 Checks whether the body is in HTML or Plaintext format.
 Then, shortens the email by removing all quoted text.
 highlights the gsheet.
 '''
-if read_email.body is not None:
-    body = read_email.body
-    print(body)
-    shortened = unquote(body)
-    html = shortened.html()
-    print("HTML Email Detected")
-    highlighter(html)
 
-else:
-    plain_body = read_email.plain_body
-    shortened = unquote(plain_body)
-    plain = shortened.plain()
-    print("Plaintext Email Detected")
-    highlighter(plain)
+def loop_html():
+        read_email.read()
+        body = read_email.body
+        print(body)
+        shortened = unquote(body)
+        html = shortened.html()
+        print("HTML Email Detected")
+        highlighter(html)
+        archive_email.archiver()
+        loop_html()
+
+def loop_plain():
+        read_email.read()
+        plain_body = read_email.plain_body
+        shortened = unquote(plain_body)
+        plain = shortened.plain()
+        print("Plaintext Email Detected")
+        highlighter(plain)
+        archive_email.archiver()
+        loop_plain()
+
+import archive_email
+
+try:    
+    loop_plain()
+
+except:
+    loop_html()
