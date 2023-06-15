@@ -61,7 +61,7 @@ msg = MIMEMultipart()
 def censor():
     global bigtrip
 
-    bigtrip = input("Is this a team 3 form? \n")
+    bigtrip = input("Is this a team 3 form?(y/N/test) \n")
 
     global recipients
 
@@ -95,51 +95,11 @@ msg['From'] = "***REMOVED***"
 msg['To'] = ", ".join(recipients)
 msg['Subject'] = f"Performance and Travel Form: Lead #{step} from {requester}"
 
+#reading the html email from the external file.
+data = open("email.html", "r").read()
+
 #Email Body Content
-message = f"""
-<h1>The Google Form "Performance and Travel" received a new submission!</h1><br>
-<p>Click here to view the <a href="https://docs.google.com/forms/d/1b3wDerCr7vUCwbQ3sIulGc44_wYqAVJDLgha3ifSwhA/edit"><b>Google Form</b></a> this came from.</p>
-<p>Click here to view the <a href="https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit?usp=sharing">spreadsheet data.</a></p>
-<br>
-<br>
---------------------START FORM RESPONSE--------------------
-<br>
-<p>&nbsp;</p>
-{html_table}
-<br>
-----------------------END FORM RESPONSE--------------------
-<br>
-<br>
-<h2>Meet Corey the Python</h2><br>
-<img src="https://iili.io/jNNaDl.png" style="width: 400px;"><br>
-<p>Corey is here to help you keep your tasks organized.</p>
-<h4> If you are working on this registration update the status of it by "Replying to All" with:</h4>
-<ul>
-    <li>Building #{step}</li>
-    <li>Sent #{step}</li>
-    <li>Signed #{step}</li>
-    <li>Lost #{step}</li>
-    <li>Contacted #{step}</li>
-</ul>
-<p>Corey will then update the Google Sheet with the correct color. You are welcome to view the <a href="https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit?usp=sharing">spreadsheet</a> anytime to view your overall progress with these tasks.</p>
-<p>A few things to note about corey:</p>
-<ul>
-    <li>Responses do not need to be case-sensitive. They do need to be spelled and spaced correctly and include the '#'.</li>
-    <li>Responses do not need to be to this thread. You can email Corey from any email address or CC him on any thread and he will mark the correct line.</li>
-    <li>Responses do not need to be sent one at a time. Corey can update the status of multiple proposals in the Sheet from one email.</li>
-        <ul>
-        <li>EX:<br>
-        BUildinG #38<br>
-        sent #40<br>
-        Corey will mark both lines their designated colors.</li>
-        </ul>
-    <li>To reset the color back to gray for "Needs a Quote" just reply "reset #{step}".</li>
-    <li>Try to be patient with Corey. He is a little slow. Sometimes it may take a few hours for the Google sheet to update with the right color. He will get to it eventually.</li>
-    <li>Don't forward emails to Corey. He doesn't like it.</li>
-</ul>
-<br>
-<p>Contact <a href="mailto:***REMOVED***">Ty</a> if you have any suggestions or questions.</p>
-"""
+message = data.format(html_table = html_table, step = step)
 
 #Add Message To Email Body
 msg.attach(MIMEText(message, 'html'))
