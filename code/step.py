@@ -1,3 +1,3 @@
 
-stepp = 67
-stepa = 25
+stepp = 70
+stepa = 31

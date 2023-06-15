@@ -93,19 +93,19 @@ class unquote:
 
 #Marks the designated line on the gsheet the designated color.
 #Sends an email if there is an error.
-def paint(line, status, color, amy_true, body, regex):
-    if amy_true is True:
+def paint(line, status, color, izy_true, body, regex):
+    if izy_true is True:
         format_cell_range(wsa, f"A{line}:AVU{line}", color)
         print(f"Marking line #{line} as {status}")
-    elif amy_true is False:
+    elif izy_true is False:
         format_cell_range(wsp, f"A{line}:AVU{line}", color)
         print(f"Marking line #{line} as {status}")
     else:
-        amy_true = str(amy_true)
+        izy_true = str(izy_true)
         error = f"""
 <h3>There was an error reading the contents of the message in Corey's inbox.</h3>
 <br>
-<p>Amy's match came back as: {amy_true}</p>
+<p>Amy's match came back as: {izy_true}</p>
 <br>
 <h3>Here is the current regex in use:</h3>
     <p>{regex}</p>
@@ -137,67 +137,67 @@ def highlighter(body_type):
     if re.search(building, str(body_type), re.IGNORECASE):
         building = 'BUILDING'
         what_row_regex = r'#(\d\d?\d?)'
-        amy_regex = r"***REMOVED***"
-        regex ='<br>' + what_row_regex + '<br>' + amy_regex
+        izy_regex = r"***REMOVED***"
+        regex ='<br>' + what_row_regex + '<br>' + izy_regex
         line = re.search(building + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
-        amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
-        paint(line, building, yellow, amy_consultant, body_type, regex)
+        izy_consultant = bool(re.search(izy_regex, body_type, re.IGNORECASE))
+        paint(line, building, yellow, izy_consultant, body_type, regex)
     else: 
         pass
 
     if re.search(sent, str(body_type), re.IGNORECASE):
         sent = 'SENT'
         what_row_regex = r'#(\d\d?\d?)'
-        amy_regex = r"***REMOVED***"
-        regex ='<br>' + what_row_regex + '<br>' + amy_regex
+        izy_regex = r"***REMOVED***"
+        regex ='<br>' + what_row_regex + '<br>' + izy_regex
         line = re.search(sent + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
         #line = re.compile(body_type, re.I).match(sent + ' ' + what_row_regex).group(1)
-        amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
-        paint(line, sent, orange, amy_consultant, body_type, regex)
+        izy_consultant = bool(re.search(izy_regex, body_type, re.IGNORECASE))
+        paint(line, sent, orange, izy_consultant, body_type, regex)
     else: 
         pass
 
     if re.search(signed, str(body_type), re.IGNORECASE):
         signed = 'SIGNED'
         what_row_regex =r'#(\d\d?\d?)'
-        amy_regex = r"***REMOVED***"
-        regex ='<br>' + what_row_regex + '<br>' + amy_regex
+        izy_regex = r"***REMOVED***"
+        regex ='<br>' + what_row_regex + '<br>' + izy_regex
         line = re.search(signed + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
-        amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
-        paint(line, signed, green, amy_consultant, body_type, regex)
+        izy_consultant = bool(re.search(izy_regex, body_type, re.IGNORECASE))
+        paint(line, signed, green, izy_consultant, body_type, regex)
     else: 
         pass
 
     if re.search(lost, str(body_type), re.IGNORECASE):
         lost = 'LOST'
         what_row_regex =r'#(\d\d?\d?)'
-        amy_regex = r"***REMOVED***"
-        regex ='<br>' + what_row_regex + '<br>' + amy_regex
+        izy_regex = r"***REMOVED***"
+        regex ='<br>' + what_row_regex + '<br>' + izy_regex
         line = re.search(lost + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
-        amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
-        paint(line, lost, red, amy_consultant, body_type, regex)
+        izy_consultant = bool(re.search(izy_regex, body_type, re.IGNORECASE))
+        paint(line, lost, red, izy_consultant, body_type, regex)
     else: 
         pass
 
     if re.search(contacted, str(body_type), re.IGNORECASE):
         contacted = 'CONTACTED'
         what_row_regex =r'#(\d\d?\d?)'
-        amy_regex = r"***REMOVED***"
-        regex ='<br>' + what_row_regex + '<br>' + amy_regex
+        izy_regex = r"***REMOVED***"
+        regex ='<br>' + what_row_regex + '<br>' + izy_regex
         line = re.search(contacted + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
-        amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
-        paint(line, contacted, purple, amy_consultant, body_type, regex)
+        izy_consultant = bool(re.search(izy_regex, body_type, re.IGNORECASE))
+        paint(line, contacted, purple, izy_consultant, body_type, regex)
     else: 
         pass
 
     if re.search(reset, str(body_type), re.IGNORECASE):
         reset = 'RESET'
         what_row_regex =r'#(\d\d?\d?)'
-        amy_regex = r"***REMOVED***"
-        regex ='<br>' + what_row_regex + '<br>' + amy_regex
+        izy_regex = r"***REMOVED***"
+        regex ='<br>' + what_row_regex + '<br>' + izy_regex
         line = re.search(reset + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
-        amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
-        paint(line, reset, gray, amy_consultant, body_type, regex)
+        izy_consultant = bool(re.search(izy_regex, body_type, re.IGNORECASE))
+        paint(line, reset, gray, izy_consultant, body_type, regex)
     else: 
         pass
 
