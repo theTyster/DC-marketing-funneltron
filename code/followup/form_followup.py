@@ -126,7 +126,8 @@ message = f"""
 <ul>
     <li>Responses do not need to be case-sensitive. They do need to be spelled and spaced correctly and include the '#'.</li>
     <li>Responses do not need to be to this thread. You can email Corey from any email address or CC him on any thread and he will mark the correct line.</li>
-    <li>To reset the celor back to gray for "Needs a Quote" just reply "reset #{step}".</li>
+    <li>To reset the color back to gray for "Needs a Quote" just reply "reset #{step}".</li>
+    <li>Try to be patient with Corey. He is a little slow. Sometimes it may take a few hours for the Google sheet to update with the right color. He will get to it eventually.</li>
 </ul>
 <br>
 <p>Contact <a href="mailto:***REMOVED***">Ty</a> if you have any suggestions or questions.</p>
