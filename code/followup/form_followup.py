@@ -23,7 +23,11 @@ ws_live = client.open('Performance and Travel Form (Responses)').worksheet(ws1)
 ws = client.open('Performance and Travel Form (Responses)').worksheet(ws2)
 
 # assigns a row into a Panda data frame.
-values = pd.DataFrame(ws_live.row_values(2))
+try:
+    values = pd.DataFrame(ws_live.row_values(2))
+except IndexError:
+    print("No new leads, check back later, player.")
+    exit()
 requester = ws_live.acell('C2').value
 
 # remove all empty values from data frame by replacing them with NaN and then dropping all cells with Nan value. inplace=True specifies that the cells will be replaced as opposed to appended I guess.
