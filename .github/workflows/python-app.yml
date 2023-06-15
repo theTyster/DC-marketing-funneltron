@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@main
     - name: Set up Python 3.7
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@main
       with:
         python-version: 3.7
     - name: Install dependencies
