@@ -279,7 +279,7 @@ elif bigtrip == "y" or "test":
     #Setting Email Parameters
     msg['From'] = "***REMOVED***"
     msg['To'] = ", ".join(recipients)
-    msg['Subject'] = f"Performance and Travel Form: Lead #{stepa} from {requester}"
+    msg['Subject'] = f"Performance and Travel Form: Lead #{stepp} from {school}; {requester}"
 
     #reading the html email from the external file.
     data = open("email.html", "r").read()
