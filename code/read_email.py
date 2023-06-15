@@ -77,7 +77,11 @@ def read():
         print("uuuhhhhhh")
     
     '''
-    this is not going to work because it will check the same emails over and over and over again. I need a way to move emails after they have been read to an archive.
+    At this point I need to update the form.py scripts to print out the line number along with the instructions on how to respond to the email correctly.
+
+    then I need to create and If/then statement in this file that will iterate over every possible response and label the gsheet accordingly.
+
+
     '''
     
     

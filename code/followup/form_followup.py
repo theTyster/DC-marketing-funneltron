@@ -27,9 +27,10 @@ values.dropna(subset=[0], inplace=True)
 # drop indices. So that "values" is only the raw data formatted as a list.
 values = values.drop(values.index[0])
 
+from step import *
 # add a column header, hide the index, and export to HTML
-values.rename(columns = {0:"<p style='color: darkgreen;'>Performance and Travel Form Response:</p>"}, inplace=True)
-html_table = values.style.hide().to_html()
+values.rename(columns = {0:f"<p style='color: darkgreen;'>Performance and Travel Form Response #{step}</p>"}, inplace=True)
+html_table = values.style.hide_index().to_html()
 
 #------------------
 
@@ -52,8 +53,10 @@ msg = MIMEMultipart()
 ## Function that determines who should be coppied on the resulting Email.
 
 def censor():
+    global bigtrip
+
     bigtrip = input("Should Jon be included on this? (y/N) \n")
-    
+
     global recipients
 
     if bigtrip == "y":
@@ -89,18 +92,9 @@ msg['Subject'] = "Performance and Travel Form: New request for a proposal"
 #Email Body Content
 message = f"""
 <h1>The Google Form "Performance and Travel" received a new submission!</h1><br>
-<p>The details submitted are below.<br>
-Hit "reply all" if you have questions regarding this email.<p>
 <p>Click here to view the <a href="https://docs.google.com/forms/d/1b3wDerCr7vUCwbQ3sIulGc44_wYqAVJDLgha3ifSwhA/edit"><b>Google Form</b></a> this came from.</p>
 <p>Click here to view the <a href="https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit?usp=sharing">spreadsheet data.</a></p>
 <br>
-<br>
-<h4> If you are working on this registration update the status of it by "Replying to All" with:</h4>
-<ul>
-    <li>Working</li>
-    <li>Sent</li>
-</ul>
-<p>This will help ensure that we do not have multiple people working on the same registration. Contact <a href="mailto:***REMOVED***">Ty</a> if you have any suggestions or questions.</p>
 <br>
 --------------------START FORM RESPONSE--------------------
 <br>
@@ -108,6 +102,28 @@ Hit "reply all" if you have questions regarding this email.<p>
 {html_table}
 <br>
 ----------------------END FORM RESPONSE--------------------
+<br>
+<br>
+<h2>Meet Corey the Python</h2><br>
+<img src="https://storage.googleapis.com/dc-website-assets/2022/06/3867da91-corey-python.png" style="width: 300px;"><br>
+<p>Corey is here to help you keep your tasks organized.</p>
+<h4> If you are working on this registration update the status of it by "Replying to All" with:</h4>
+<ul>
+    <li>Building #{step}</li>
+    <li>Sent #{step}</li>
+    <li>Signed #{step}</li>
+    <li>Lost #{step}</li>
+    <li>Contacted #{step}</li>
+</ul>
+<p>Corey will then update the Google Sheet with the correct color. You are welcome to view the <a href="https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit?usp=sharing">spreadsheet</a> anytime to view your overall progress with these tasks.</p>
+<p>A few things to note about corey:</p>
+<ul>
+    <li>Responses do not need to be case-sensitive. They do need to be spelled and spaced correctly and include the '#'.</li>
+    <li>Responses do not need to be to this thread. You can email Corey from any email address or CC him on any thread and he will mark the correct line.</li>
+    <li>To reset the celor back to gray for "Needs a Quote" just reply "reset #{step}".</li>
+</ul>
+<br>
+<p>Contact <a href="mailto:***REMOVED***">Ty</a> if you have any suggestions or questions.</p>
 """
 
 #Add Message To Email Body
@@ -124,19 +140,14 @@ s.quit()
 from gspread_formatting import *
 
 # Sort the abridged Data frame from line 28 and copies it into a different sheet at a specified location and without headers or indices.
-append = int(input(f"""What row would you  like to append the Data to in '{ws2}'? """))
+#append = int(input(f"""What row would you  like to append the Data to in '{ws2}'? """))
+append = step
 sorter = values.unstack().to_frame().T
 set_with_dataframe(ws, sorter, row=append, col=3, include_index=False, include_column_header=False)
 
 
 # Colors the row the appropriate color
-red = cellFormat(backgroundColor=color(255,0,0))
-orange = cellFormat(backgroundColor=color(246,178,107))
-yellow = cellFormat(backgroundColor=color(255,229,103))
-green = cellFormat(backgroundColor=color(147,196,125))
-purple = cellFormat(backgroundColor=color(194,123,160))
 gray = cellFormat(backgroundColor=color(100, 100, 100))
-
 format_cell_range(ws, f"A{append}:AVU{append}", gray)
 
 
@@ -146,3 +157,11 @@ ws.update(f'B{append}', mover)
 
 # Deletes the copied row mentioned in line 87 from ws1
 ws_live.delete_rows(2, 2)
+    
+if bigtrip == "test":
+    pass
+else:
+    append += 1
+    stepper = open("step.py", "w")
+    stepper.write(f"step = {append}")
+    stepper.close()
