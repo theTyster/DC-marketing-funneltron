@@ -66,26 +66,50 @@ except IndexError:
      '''''''''''''''''''...''',,;;:cccccccccccccccccc:;,,'..'''..                          
      '''''''''''''''''''''''''''''...''''',,,,'''''...'''''''''''''.                       
      ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''.                     
-     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''.                   
-     .....................................................................
+     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 """
     print(pepe + "\n" + "No new leads, check back later, player.")
     exit()
 requester = ws_live.acell('C2').value
-leads_leftp = int(wsp.acell("E1").value)
-leads_leftp += 1
-leads_lefta = int(wsa.acell("E1").value)
-leads_lefta += 1
+leads_leftp = int(wsp.acell("F1").value)+1
+leads_lefta = int(wsa.acell("F1").value)+1
+
 
 # remove all empty values from data frame by replacing them with NaN and then dropping all cells with Nan value. inplace=True specifies that the cells will be replaced as opposed to appended I guess.
 values[0].replace('', np.nan, inplace=True)
 values.dropna(subset=[0], inplace=True)
 
-# drop indices. So that "values" is only the raw data formatted as a list.
-values = values.drop(values.index[0])
+# reindexes. So that "values" is only the raw data formatted as a list.
+values = values.set_index([pd.Index(list(range(0, len(values.index))))])
 
 #Prints the form data into std out to make it easier to determine who the data should go to.
+#Asks what line the school is on for further organization.
 print(values)
+
+school_name_row = input("What line is the school name on? (default is line 11) \n")
+
+if school_name_row == "":
+    school_name_row = 11
+    school = values.iat[school_name_row,0]
+else:
+    while int(school_name_row) > int(len(values.index)) or int(school_name_row) < 1: 
+        print("Input is out of range\n")
+        school_name_row = int(input("What line is the school name on? (default is line 11) \n"))
+
+    school = str(values.iat[int(school_name_row),0])
+
+    
+values = values.append([0])
+values = values.shift(periods=1)
+tmp = values.iat[int(school_name_row)+1,0]
+values.iat[int(school_name_row)+1,0] = values.iat[0,0]
+values.iat[0,0] = tmp
+values.dropna(subset=[0], inplace=True)
+
+print("School is " + school + "\n")
+print(values)
+
+
 
 ## Function that determines who should be coppied on the resulting Email. And who should be the contact owner in HubSpot
 def censor():
@@ -119,10 +143,10 @@ censor()
 from step import *
 # add a column header, hide the index, and export to HTML
 if bigtrip == "n":
-    values.rename(columns = {0:f"<p style='color: darkgreen;'>Performance and Travel Form Response #{stepa}</p>"}, inplace=True)
+    values.rename(columns = {0:f"<p style='color: darkgreen;'>Performance and Travel Form Response #{stepp}</p>"}, inplace=True)
     html_table = values.style.hide_index().to_html()
 elif bigtrip == "y" or "test":
-    values.rename(columns = {0:f"<p style='color: darkgreen;'>Performance and Travel Form Response #{stepp}</p>"}, inplace=True)
+    values.rename(columns = {0:f"<p style='color: darkgreen;'>Performance and Travel Form Response #{stepa}</p>"}, inplace=True)
     html_table = values.style.hide_index().to_html()
 
 #------------------
@@ -211,7 +235,7 @@ if bigtrip == "n":
     #Setting Email Parameters
     msg['From'] = "***REMOVED***"
     msg['To'] = ", ".join(recipients)
-    msg['Subject'] = f"Performance and Travel Form: Lead #{stepp} from {requester}"
+    msg['Subject'] = f"Performance and Travel Form: Lead #{stepp} from {school}; {requester}"
 
     #reading the html email from the external file.
     data = open("email.html", "r").read()
@@ -219,7 +243,7 @@ if bigtrip == "n":
     #Email Body Content
     hubspot_contact_link = f"https://app.hubspot.com/contacts/3057073/contact/{result}"
     sheet_link = f"https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit#gid=1279253480&range=A{stepp}"
-    message = data.format(leads_left = leads_leftp, html_table = html_table, step = stepp, sheet_link = sheet_link, hubspot_contact_link = hubspot_contact_link)
+    message = data.format(leads_left = leads_leftp, html_table = html_table, step = stepp, sheet_link = sheet_link, hubspot_contact_link = hubspot_contact_link, school = school)
 
     #Add Message To Email Body
     msg.attach(MIMEText(message, 'html'))
@@ -235,22 +259,21 @@ if bigtrip == "n":
     appendp = stepp
     appenda = stepa
     sorter = values.unstack().to_frame().T
-    set_with_dataframe(wsp, sorter, row=appendp, col=3, include_index=False, include_column_header=False)
+    set_with_dataframe(wsp, sorter, row=appendp, col=2, include_index=False, include_column_header=False)
 
     # Colors the row the appropriate color
     gray = cellFormat(backgroundColor=color(0.7176470588235294,0.7176470588235294,0.7176470588235294))
     Porsha_yellow = cellFormat(backgroundColor=color(0.9450980392156862,0.7607843137254902,0.19607843137254902))
-    format_cell_range(wsp, f"B{appendp}:AVU{appendp}", gray)
-    wsp.update(f"A{stepp}", "Porsha")
-    format_cell_range(wsp, f"A{stepp}", Porsha_yellow)
-    
+    format_cell_range(wsp, f"A{appendp}:AVU{appendp}", gray)
     # Move a cell from one sheet to another with A1 Notation.
     mover = ws_live.acell('B2').value
-    wsp.update(f'B{appendp}', mover)
+    wsp.update(f'A{appendp}', mover)
+    mover = wsp.get(f'D{stepp}:AVU{stepp}')
+    wsp.update(f'C{appendp}:AVU{appendp}', mover)
     set_row_height(wsp, f'{stepp}', 21)
 
     # Deletes the copied line from ws1
-    ws_live.delete_rows(2, 2)
+    ws_live.delete_rows(2)
 
 elif bigtrip == "y" or "test":
     #Setting Email Parameters
@@ -264,7 +287,7 @@ elif bigtrip == "y" or "test":
     #Email Body Content
     hubspot_contact_link = f"https://app.hubspot.com/contacts/3057073/contact/{result}"
     sheet_link = f"https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit#gid=1519048498&range=A{stepa}"
-    message = data.format(leads_left = leads_lefta, html_table = html_table, step = stepa, sheet_link = sheet_link, hubspot_contact_link = hubspot_contact_link)
+    message = data.format(leads_left = leads_lefta, html_table = html_table, step = stepa, sheet_link = sheet_link, hubspot_contact_link = hubspot_contact_link, school = school)
 
     #Add Message To Email Body
     msg.attach(MIMEText(message, 'html'))
@@ -280,19 +303,19 @@ elif bigtrip == "y" or "test":
     appendp = stepp
     appenda = stepa
     sorter = values.unstack().to_frame().T
-    set_with_dataframe(wsa, sorter, row=appenda, col=3, include_index=False, include_column_header=False)
+    set_with_dataframe(wsa, sorter, row=appenda, col=2, include_index=False, include_column_header=False)
 # Colors the row the appropriate color
     gray = cellFormat(backgroundColor=color(0.7176470588235294,0.7176470588235294,0.7176470588235294))
     Amy_blue = cellFormat(backgroundColor=color(0.43529411764705883,0.6588235294117647,0.8627450980392157))
-    format_cell_range(wsa, f"B{appenda}:AVU{appenda}", gray)
-    wsa.update(f"A{stepa}", "Amy")
-    format_cell_range(wsa, f"A{stepa}", Amy_blue)
+    format_cell_range(wsa, f"A{appenda}:AVU{appenda}", gray)
 # Move a cell from one sheet to another with A1 Notation.
     mover = ws_live.acell('B2').value
-    wsa.update(f'B{appenda}', mover)
+    wsa.update(f'A{appenda}', mover)
+    mover = wsa.get(f'D{stepa}:AVU{stepa}')
+    wsa.update(f'C{appenda}:AVU{appenda}', mover)
     set_row_height(wsa, f'{stepa}', 21)
 # Deletes the copied line from ws1
-    ws_live.delete_rows(2, 2)
+    ws_live.delete_rows(2)
 
 
 

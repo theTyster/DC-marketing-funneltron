@@ -1,3 +1,3 @@
 
-stepp = 72
-stepa = 24
+stepp = 76
+stepa = 26
