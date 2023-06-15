@@ -18,7 +18,7 @@ from gspread_dataframe import get_as_dataframe, set_with_dataframe
 #Naming and gaining access to a specific workbook and specific sheets within that workbook.
 ws1 = 'Form Responses (Do not Edit)'
 ws2 = "Porsha's Leads"
-ws3 = "Amy's Leads"
+ws3 = "Izzy's Leads"
 
 ws_live = client.open('Performance and Travel Form (Responses)').worksheet(ws1)
 wsp = client.open('Performance and Travel Form (Responses)').worksheet(ws2)
@@ -122,7 +122,7 @@ def censor():
     if bigtrip == "y":
     
         recipients = ["***REMOVED***", "***REMOVED***"]
-        print("Sending to Ty and Amy")
+        print("Sending to Ty and Izzy")
     
     elif bigtrip == "n":
     
@@ -160,7 +160,7 @@ import hubspot
 from hubspot.crm.contacts import SimplePublicObjectInput, ApiException, PublicObjectSearchRequest
 import re
 
-Amy_id = "48087941"
+izy_id = "48087941"
 Porsha_id = "25967362"
 
 try:
@@ -186,7 +186,7 @@ try:
         properties = {
             "lifecyclestage": "marketingqualifiedlead",
             "n2023_account_status": "Customer",
-            "hubspot_owner_id": Amy_id
+            "hubspot_owner_id": izy_id
         }
         regex = r"('id': )'([\d]*)"
         public_object_search_request = PublicObjectSearchRequest(filter_groups=[{"filters":[{"value":requester,"propertyName":"email","operator":"EQ"}]}])
@@ -196,7 +196,7 @@ try:
             print("contact ID is: " + result)
             simple_public_object_input = SimplePublicObjectInput(properties=properties)
             hs_client.crm.contacts.basic_api.update(contact_id=result, simple_public_object_input=simple_public_object_input)
-            print("Contact has been updated and assigned to Amy")
+            print("Contact has been updated and assigned to Izzy")
         except AttributeError:
             print(f"""**********BZZZZZZZZZZZTT**********\nContact does not exist in Hubspot try searching for them at the link below: \n https://app.hubspot.com/contacts/3057073/objects/0-1/views/all/list?query={requester}\n**********THATS AN ERROR**********""")
             exit()
@@ -306,7 +306,7 @@ elif bigtrip == "y" or "test":
     set_with_dataframe(wsa, sorter, row=appenda, col=2, include_index=False, include_column_header=False)
 # Colors the row the appropriate color
     gray = cellFormat(backgroundColor=color(0.7176470588235294,0.7176470588235294,0.7176470588235294))
-    Amy_blue = cellFormat(backgroundColor=color(0.43529411764705883,0.6588235294117647,0.8627450980392157))
+    izy_blue = cellFormat(backgroundColor=color(0.43529411764705883,0.6588235294117647,0.8627450980392157))
     format_cell_range(wsa, f"A{appenda}:AVU{appenda}", gray)
 # Move a cell from one sheet to another with A1 Notation.
     mover = ws_live.acell('B2').value

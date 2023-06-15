@@ -12,7 +12,7 @@ import re
 #Naming and gaining access to a specific workbook and specific sheets within that workbook.
 ws1 = 'Form Responses (Do not Edit)'
 ws2 = "Porsha's Leads"
-ws3 = "Amy's Leads"
+ws3 = "Izzy's Leads"
 
 ws_live = client.open('Performance and Travel Form (Responses)').worksheet(ws1)
 wsp = client.open('Performance and Travel Form (Responses)').worksheet(ws2)
