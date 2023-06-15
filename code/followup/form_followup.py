@@ -124,10 +124,16 @@ set_with_dataframe(ws, sorter, row=append, col=3, include_index=False, include_c
 # Colors the row the appropriate color
 if bigtrip == "n" or "test":
     gray = cellFormat(backgroundColor=color(0.7176470588235294,0.7176470588235294,0.7176470588235294))
-    format_cell_range(ws, f"A{append}:AVU{append}", gray)
+    Porsha_yellow = cellFormat(backgroundColor=color(0.9450980392156862,0.7607843137254902,0.19607843137254902))
+    format_cell_range(ws, f"B{append}:AVU{append}", gray)
+    ws.update(f"A{step}", "Porsha")
+    format_cell_range(ws, f"A{step}", Porsha_yellow)
 elif bigtrip == "y":
-    gray = cellFormat(backgroundColor=color(0.6,0.6,0.6))
-    format_cell_range(ws, f"A{append}:AVU{append}", gray)
+    gray = cellFormat(backgroundColor=color(0.7176470588235294,0.7176470588235294,0.7176470588235294))
+    Amy_blue = cellFormat(backgroundColor=color(0.43529411764705883,0.6588235294117647,0.8627450980392157))
+    format_cell_range(ws, f"B{append}:AVU{append}", gray)
+    ws.update(f"A{step}", "Amy")
+    format_cell_range(ws, f"A{step}", Amy_blue)
 
 # Move a cell from one sheet to another with A1 Notation.
 mover = ws_live.acell('B2').value
