@@ -92,7 +92,7 @@ if school_name_row == "":
     school_name_row = 11
     school = values.iat[school_name_row,0]
 else:
-    while int(school_name_row) > int(len(values.index)) or int(school_name_row) < 1: 
+    while int(school_name_row) > int(len(values.index)) or int(school_name_row) < 0: 
         print("Input is out of range\n")
         school_name_row = int(input("What line is the school name on? (default is line 11) \n"))
 
