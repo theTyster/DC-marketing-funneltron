@@ -209,18 +209,12 @@ Then, shortens the email by removing all quoted text.
 highlights the gsheet.
 '''
 
-def loop_html():
-        read_email.read()
-        body = read_email.body
-        shortened = unquote(body)
-        print("HTML Email Detected")
-        html = shortened.html()
-        highlighter(html)
-        archive_email.archiver()
-        loop_html()
-
 def loop_plain():
-        read_email.read()
+    read_email.read()
+    if read_email.inbox_empty == True:
+        print("There are no new messages in your inbox") 
+        return None
+    else:
         plain_body = read_email.plain_body
         shortened = unquote(plain_body)
         plain = shortened.plain()
@@ -228,6 +222,20 @@ def loop_plain():
         highlighter(plain)
         archive_email.archiver()
         loop_plain()
+
+def loop_html():
+    read_email.read()
+    if read_email.inbox_empty == True:
+        print("There are no new messages in your inbox") 
+        return None
+    else:
+        body = read_email.body
+        shortened = unquote(body)
+        print("HTML Email Detected")
+        html = shortened.html()
+        highlighter(html)
+        archive_email.archiver()
+        loop_html()
 
 import archive_email
 
@@ -251,3 +259,4 @@ wsp.update('C150', ' ')
 wsp.update('C150', '')
 wsa.update('C150', ' ')
 wsa.update('C150', '')
+print("I tried")

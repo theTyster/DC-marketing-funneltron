@@ -68,7 +68,7 @@ except IndexError:
      ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''.                     
      ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 """
-    print(pepe + "\n" + "No new leads, check back later, player.")
+    print(pepe + "\n" + "No new leads. Check back later, player.")
     exit()
 requester = ws_live.acell('C2').value
 leads_leftp = int(wsp.acell("F1").value)+1

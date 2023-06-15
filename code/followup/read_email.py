@@ -8,6 +8,7 @@
 #        return "".join(c if c.isalnum() else "_" for c in text)
 body = None
 plain_body = None
+inbox_empty = None
 def read():
 
     import imaplib
@@ -35,38 +36,38 @@ def read():
     for i in range(messages, messages-N, -1):
          try:
              res, msg = imap.fetch(str(i), "(RFC822)")
+             imap.fetch
+             for response in msg:
+                 if isinstance(response, tuple):
+                     #parse a bytes email into a message object
+                    msg = email.message_from_bytes(response[1])
+                    if msg.is_multipart():
+                        # iterate over email parts
+                        for part in msg.walk():
+                            content_type = part.get_content_type()
+                            content_disposition = str(part.get("Content-Disposition"))
+                            try:
+                                global body
+                                body = part.get_payload(decode=True).decode()
+                            except:
+                                pass
+                            if content_type == "text/plain" and "attachment" not in content_disposition:
+                                pass
+                    else:
+                        #extract content type of the email              
+                        content_type = msg.get_content_type()           
+                        if content_type == "text/plain":                
+                            global plain_body
+                            plain_body = msg.get_payload(decode=True).decode()
          except imaplib.IMAP4.error:
-             print("There are no new messages in your inbox") 
-             exit()
-         imap.fetch
-         for response in msg:
-             if isinstance(response, tuple):
-                 #parse a bytes email into a message object
-                msg = email.message_from_bytes(response[1])
-                if msg.is_multipart():
-                    # iterate over email parts
-                    for part in msg.walk():
-                        content_type = part.get_content_type()
-                        content_disposition = str(part.get("Content-Disposition"))
-                        try:
-                            global body
-                            body = part.get_payload(decode=True).decode()
-                        except:
-                            pass
-                        if content_type == "text/plain" and "attachment" not in content_disposition:
-                            pass
-                else:
-                    #extract content type of the email              
-                    content_type = msg.get_content_type()           
-                    if content_type == "text/plain":                
-                        global plain_body
-                        plain_body = msg.get_payload(decode=True).decode()
+             inbox_empty = True
+             return
 
     imap.close()
     imap.logout()
     
-#read()
-#try:
-#    print(body)
-#except:
-#    print(plain_body)
+read()
+try:
+    print(body)
+except:
+    print(plain_body)
