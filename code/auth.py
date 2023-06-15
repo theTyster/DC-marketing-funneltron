@@ -14,7 +14,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_name(json_loc, scope)
 client = gspread.authorize(creds)
 
 
-username = "***REMOVED***"
-password = "***REMOVED***"
+username = "***Removed***"
+password = "***Removed***"
 
-hs_client = hubspot.Client.create(access_token="***REMOVED***")
+hs_client = hubspot.Client.create(access_token="***Removed***")

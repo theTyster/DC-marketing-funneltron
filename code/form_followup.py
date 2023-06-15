@@ -121,16 +121,16 @@ def censor():
 
     if bigtrip == "y":
     
-        recipients = ["***REMOVED***", "***REMOVED***"]
+        recipients = ["***Removed***", "***Removed***"]
         print("Sending to Ty and Izzy")
     
     elif bigtrip == "n":
     
-        recipients = ["***REMOVED***", "***REMOVED***"]
+        recipients = ["***Removed***", "***Removed***"]
         print("Sending to Ty, Porsha")
 
     elif bigtrip == "test":
-        recipients =["***REMOVED***"]
+        recipients =["***Removed***"]
         print("Sending you a test email")
 
     else:
@@ -233,7 +233,7 @@ from gspread_formatting import *
 
 if bigtrip == "n":
     #Setting Email Parameters
-    msg['From'] = "***REMOVED***"
+    msg['From'] = "***Removed***"
     msg['To'] = ", ".join(recipients)
     msg['Subject'] = f"Performance and Travel Form: Lead #{stepp} from {school}; {requester}"
 
@@ -277,7 +277,7 @@ if bigtrip == "n":
 
 elif bigtrip == "y" or "test":
     #Setting Email Parameters
-    msg['From'] = "***REMOVED***"
+    msg['From'] = "***Removed***"
     msg['To'] = ", ".join(recipients)
     msg['Subject'] = f"Performance and Travel Form: Lead #{stepp} from {school}; {requester}"
 

@@ -1,5 +1,5 @@
 #! python3
-#This file provides the function that opens the first email in ***REMOVED***'s inbox and then returns body as a variable.#It is used by cell_label.py
+#This file provides the function that opens the first email in dc.python's inbox and then returns body as a variable.#It is used by cell_label.py
 
 # followed the guide at www.thepythoncode.com/article/reading-emails-in-python
 

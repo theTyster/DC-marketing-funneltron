@@ -11,8 +11,8 @@ import re
 
 #Naming and gaining access to a specific workbook and specific sheets within that workbook.
 ws1 = 'Form Responses (Do not Edit)'
-ws2 = "Porsha's Leads"
-ws3 = "Izzy's Leads"
+ws2 = "***Removed***'s Leads"
+ws3 = "***Removed***'s Leads"
 
 ws_live = client.open('Performance and Travel Form (Responses)').worksheet(ws1)
 wsp = client.open('Performance and Travel Form (Responses)').worksheet(ws2)
@@ -52,8 +52,8 @@ def error_msg(message):
 
 
     #Setting Email Parameters
-    msg['From'] = "***REMOVED***"
-    msg['To'] = "***REMOVED***"
+    msg['From'] = "***Removed***"
+    msg['To'] = "***Removed***"
     msg['Subject'] = "Houston, we have a problem"
 
     #reading the html email from the external file.
@@ -137,7 +137,7 @@ def highlighter(body_type):
     if re.search(building, str(body_type), re.IGNORECASE):
         building = 'BUILDING'
         what_row_regex = r'#(\d\d?\d?)'
-        izy_regex = r"***REMOVED***"
+        izy_regex = r"***Removed***"
         regex ='<br>' + what_row_regex + '<br>' + izy_regex
         line = re.search(building + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
         izy_consultant = bool(re.search(izy_regex, body_type, re.IGNORECASE))
@@ -148,7 +148,7 @@ def highlighter(body_type):
     if re.search(sent, str(body_type), re.IGNORECASE):
         sent = 'SENT'
         what_row_regex = r'#(\d\d?\d?)'
-        izy_regex = r"***REMOVED***"
+        izy_regex = r"***Removed***"
         regex ='<br>' + what_row_regex + '<br>' + izy_regex
         line = re.search(sent + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
         #line = re.compile(body_type, re.I).match(sent + ' ' + what_row_regex).group(1)
@@ -160,7 +160,7 @@ def highlighter(body_type):
     if re.search(signed, str(body_type), re.IGNORECASE):
         signed = 'SIGNED'
         what_row_regex =r'#(\d\d?\d?)'
-        izy_regex = r"***REMOVED***"
+        izy_regex = r"***Removed***"
         regex ='<br>' + what_row_regex + '<br>' + izy_regex
         line = re.search(signed + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
         izy_consultant = bool(re.search(izy_regex, body_type, re.IGNORECASE))
@@ -171,7 +171,7 @@ def highlighter(body_type):
     if re.search(lost, str(body_type), re.IGNORECASE):
         lost = 'LOST'
         what_row_regex =r'#(\d\d?\d?)'
-        izy_regex = r"***REMOVED***"
+        izy_regex = r"***Removed***"
         regex ='<br>' + what_row_regex + '<br>' + izy_regex
         line = re.search(lost + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
         izy_consultant = bool(re.search(izy_regex, body_type, re.IGNORECASE))
@@ -182,7 +182,7 @@ def highlighter(body_type):
     if re.search(contacted, str(body_type), re.IGNORECASE):
         contacted = 'CONTACTED'
         what_row_regex =r'#(\d\d?\d?)'
-        izy_regex = r"***REMOVED***"
+        izy_regex = r"***Removed***"
         regex ='<br>' + what_row_regex + '<br>' + izy_regex
         line = re.search(contacted + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
         izy_consultant = bool(re.search(izy_regex, body_type, re.IGNORECASE))
@@ -193,7 +193,7 @@ def highlighter(body_type):
     if re.search(reset, str(body_type), re.IGNORECASE):
         reset = 'RESET'
         what_row_regex =r'#(\d\d?\d?)'
-        izy_regex = r"***REMOVED***"
+        izy_regex = r"***Removed***"
         regex ='<br>' + what_row_regex + '<br>' + izy_regex
         line = re.search(reset + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
         izy_consultant = bool(re.search(izy_regex, body_type, re.IGNORECASE))
