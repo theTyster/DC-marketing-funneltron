@@ -61,7 +61,7 @@ msg = MIMEMultipart()
 def censor():
     global bigtrip
 
-    bigtrip = input("Is this a team 3 form?")
+    bigtrip = input("Is this a team 3 form? \n")
 
     global recipients
 
