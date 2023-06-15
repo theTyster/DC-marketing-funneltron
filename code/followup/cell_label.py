@@ -58,26 +58,32 @@ def gray_paint():
 if  re.search(building, str(read_email.body), re.IGNORECASE):
 
     yellow_paint() 
+    print(f"Marking line #{line} as 'building'"
     
 elif  re.search(sent, str(read_email.body), re.IGNORECASE):
 
     orange_paint() 
+    print(f"Marking line #{line} as 'sent'"
 
 elif  re.search(signed, str(read_email.body), re.IGNORECASE):
 
     green_paint()
+    print(f"Marking line #{line} as 'signed'"
 
 elif  re.search(lost, str(read_email.body), re.IGNORECASE):
 
     red_paint()
+    print(f"Marking line #{line} as 'lost'"
     
 elif  re.search(contacted, str(read_email.body), re.IGNORECASE):
 
     purple_paint()
+    print(f"Marking line #{line} as 'contacted'"
 
 elif  re.search(reset, str(read_email.body), re.IGNORECASE):
 
     gray_paint()
+    print(f"Marking line #{line} as 'reset'"
 
 else:
     pass
