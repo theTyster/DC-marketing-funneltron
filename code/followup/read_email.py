@@ -10,7 +10,6 @@ body = None
 plain_body = None
 def read():
 
-
     import imaplib
     import email
     from email.header import decode_header
@@ -34,7 +33,11 @@ def read():
     N = 1
     
     for i in range(messages, messages-N, -1):
-         res, msg = imap.fetch(str(i), "(RFC822)")
+         try:
+             res, msg = imap.fetch(str(i), "(RFC822)")
+         except imaplib.IMAP4.error:
+             print("There are no new messages in your inbox") 
+             exit()
          imap.fetch
          for response in msg:
              if isinstance(response, tuple):

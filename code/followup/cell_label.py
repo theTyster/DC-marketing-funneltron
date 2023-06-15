@@ -11,11 +11,12 @@ import re
 
 #Naming and gaining access to a specific workbook and specific sheets within that workbook.
 ws1 = 'Form Responses (Do not Edit)'
-ws2 = 'Form Responses (Current)'
+ws2 = "Porsha's Leads"
+ws3 = "Amy's Leads"
 
 ws_live = client.open('Performance and Travel Form (Responses)').worksheet(ws1)
-ws = client.open('Performance and Travel Form (Responses)').worksheet(ws2)
-
+wsp = client.open('Performance and Travel Form (Responses)').worksheet(ws2)
+wsa = client.open('Performance and Travel Form (Responses)').worksheet(ws3)
 
 #Colors to change the Gsheet rows
 """
@@ -38,6 +39,41 @@ lost = 'LOST'
 contacted = 'CONTACTED'
 reset = 'RESET'
 
+def error_msg(message):
+
+    import smtplib
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+
+    #Establish SMTP Connection
+    s = smtplib.SMTP('smtp-mail.outlook.com', 587)
+
+    #Start TLS based SMTP Session
+    s.starttls()
+
+    #Login Using Your Email ID & Password
+    s.login(username, password)
+
+    #To Create Email Message in Proper Format
+    msg = MIMEMultipart()
+
+
+    #Setting Email Parameters
+    msg['From'] = "***REMOVED***"
+    msg['To'] = "***REMOVED***"
+    msg['Subject'] = "Houston, we have a problem"
+
+    #reading the html email from the external file.
+    data = open("email.html", "r").read()
+
+    #Add Message To Email Body
+    msg.attach(MIMEText(message, 'html'))
+
+    #To Send the Email
+    s.send_message(msg)
+
+    #Terminating the SMTP Session
+    s.quit()
 
 #Removes any quoted text from the body of the email.
 #I'm a bit proud of this because this is my first time writing a class. this was written so that either plaintext or HTML emails would be considered.
@@ -48,7 +84,7 @@ class unquote:
         try:
             regex = "<blockquote[\s\S]*"
             replace = re.sub(regex, '', msg.bod)
-        except:
+        except Exception:
             regex = "Forwarded Message[\s\S*"
             replace = re.sub(regex, '', replace)
         return replace
@@ -56,15 +92,39 @@ class unquote:
         try:
             regex = "^>.*$"
             replace = re.sub(regex, '', msg.bod, flags=re.MULTILINE)
-        except:
+        except Exception:
             regex = "Forwarded Message[\s\S*"
             replace = re.sub(regex, '', replace)
         return replace
 
 
 #Marks the designated line on the gsheet the designated color.
-def paint(line, color):
-    format_cell_range(ws, f"B{line}:AVU{line}", color)
+#Sends an email if there is an error.
+def paint(line, status, color, amy_true, body, regex):
+    if amy_true is True:
+        format_cell_range(wsa, f"B{line}:AVU{line}", color)
+        print(f"Marking line #{line} as {status}")
+    elif amy_true is False:
+        format_cell_range(wsp, f"B{line}:AVU{line}", color)
+        print(f"Marking line #{line} as {status}")
+    else:
+        amy_true = str(amy_true)
+        error = f"""
+<h3>There was an error reading the contents of the message in Corey's inbox.</h3>
+<br>
+<p>Amy's match came back as: {amy_true}</p>
+<br>
+<h3>Here is the current regex in use:</h3>
+    <p>{regex}</p>
+<br>
+<h3>This is the contents of the body of the email that caused the error:</h3>
+
+    <p>{body}</p>
+"""
+        error_msg(error)
+        print("There was an error reading the contents of the message. An email notification has been sent.")
+        exit()
+    
 
 '''
 Considers whether anyone of the keywords listed above are in the email. 
@@ -73,44 +133,62 @@ It then passes the line number on to paint() and designates the color it should 
 '''
 def highlighter(body_type):
     if re.search(building, str(body_type), re.IGNORECASE):
-        line = re.search(building + ' ' + '#(\d\d?\d?)', body_type, re.IGNORECASE).group(1)
-        paint(line, yellow)
-        print(f"Marking line #{line} as 'building'")
+        what_row_regex = r'#(\d\d?\d?)'
+        amy_regex = r"***REMOVED***"
+        regex ='<br>' + what_row_regex + '<br>' + amy_regex
+        line = re.search(building + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
+        amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
+        paint(line, building, yellow, amy_consultant, body_type, regex)
     else: 
         pass
         
     if re.search(sent, str(body_type), re.IGNORECASE):
-        line = re.search(sent + ' ' + '#(\d\d?\d?)', body_type, re.IGNORECASE).group(1)
-        paint(line, orange)
-        print(f"Marking line #{line} as 'sent'")
+        what_row_regex = '#(\d\d?\d?)'
+        amy_regex = r"***REMOVED***"
+        regex ='<br>' + what_row_regex + '<br>' + amy_regex
+        line = re.search(sent + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
+        amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
+        paint(line, sent, yellow, amy_consultant, body_type, regex)
     else: 
         pass
 
     if re.search(signed, str(body_type), re.IGNORECASE):
-        line = re.search(signed + ' ' + '#(\d\d?\d?)', body_type, re.IGNORECASE).group(1)
-        paint(line, green)
-        print(f"Marking line #{line} as 'signed'")
+        what_row_regex = '#(\d\d?\d?)'
+        amy_regex = r"***REMOVED***"
+        regex ='<br>' + what_row_regex + '<br>' + amy_regex
+        line = re.search(signed + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
+        amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
+        paint(line, signed, yellow, amy_consultant, body_type, regex)
     else: 
         pass
 
     if re.search(lost, str(body_type), re.IGNORECASE):
-        line = re.search(lost + ' ' + '#(\d\d?\d?)', body_type, re.IGNORECASE).group(1)
-        paint(line, red)
-        print(f"Marking line #{line} as 'lost'")
+        what_row_regex = '#(\d\d?\d?)'
+        amy_regex = r"***REMOVED***"
+        regex ='<br>' + what_row_regex + '<br>' + amy_regex
+        line = re.search(lost + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
+        amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
+        paint(line, lost, yellow, amy_consultant, body_type, regex)
     else: 
         pass
         
     if re.search(contacted, str(body_type), re.IGNORECASE):
-        line = re.search(contacted + ' ' + '#(\d\d?\d?)', body_type, re.IGNORECASE).group(1)
-        paint(line, purple)
-        print(f"Marking line #{line} as 'contacted'")
+        what_row_regex = '#(\d\d?\d?)'
+        amy_regex = r"***REMOVED***"
+        regex ='<br>' + what_row_regex + '<br>' + amy_regex
+        line = re.search(contacted + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
+        amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
+        paint(line, contacted, yellow, amy_consultant, body_type, regex)
     else: 
         pass
 
     if re.search(reset, str(body_type), re.IGNORECASE):
-        line = re.search(reset + ' ' + '#(\d\d?\d?)', body_type, re.IGNORECASE).group(1)
-        paint(line, gray)
-        print(f"Marking line #{line} as 'reset'")
+        what_row_regex = '#(\d\d?\d?)'
+        amy_regex = r"***REMOVED***"
+        regex ='<br>' + what_row_regex + '<br>' + amy_regex
+        line = re.search(reset + ' ' + what_row_regex, body_type, re.IGNORECASE).group(1)
+        amy_consultant = bool(re.search(amy_regex, body_type, re.IGNORECASE))
+        paint(line, reset, yellow, amy_consultant, body_type, regex)
     else: 
         pass
 
@@ -125,10 +203,9 @@ highlights the gsheet.
 def loop_html():
         read_email.read()
         body = read_email.body
-        print(body)
         shortened = unquote(body)
-        html = shortened.html()
         print("HTML Email Detected")
+        html = shortened.html()
         highlighter(html)
         archive_email.archiver()
         loop_html()
@@ -147,6 +224,14 @@ import archive_email
 
 try:    
     loop_plain()
+except TypeError:
+    print("No plaintext emails")
+except UnboundLocalError: 
+    pass
 
-except:
+try:
     loop_html()
+except TypeError: 
+    print("No HTML emails")
+except UnboundLocalError: 
+    pass

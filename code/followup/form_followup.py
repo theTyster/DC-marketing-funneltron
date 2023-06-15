@@ -28,11 +28,54 @@ wsa = client.open('Performance and Travel Form (Responses)').worksheet(ws3)
 try:
     values = pd.DataFrame(ws_live.row_values(2))
 except IndexError:
-    print("No new leads, check back later, player.")
+    pepe = """
+                               .';:cccc:;,'.                   ....                        
+                           .,ccccccccccccccccc;'.      ..,;cccccccccc;.                    
+                         ':cccccccccccccccccccccc:...;ccccccccccccccccc:.                  
+                       .ccccccccccccccccccccccccccc,ccccccccccccccccccccc'                 
+                      ;cccccccccccc:::::::::::::ccc,cccccccccccccccccccccc;                
+                    .:ccccccccc::::cccccccccccc::::':::::::::::::::::::::::.               
+                   .cccccccc;;:cccccccccccccccccccc:;:cccccccccccccccccccccc;..            
+                  'cccccccc:ccccccccccccccc::::::::::,:::ccccccccc:::::::::::::;'.         
+                 ,cccccccccccccccccccc::::::::cccccccccc::;cc:::::c::::::::::::cc:;.       
+               .:cccccccccccccccccc:;;:;:::::::ccccccccc::;;::::::::cccccccccc::::::,      
+            .,:;cccccccccccccccc:::;;;:cccccccccccccccccccc:;ccccccccccc::::;;;;;:ccc;.    
+          .;cc,ccccccccccccc:::::::cccccccccc;,..,lkkOOOOkkx,cc;:ldxkO0d.     .:KX0Oxl;'   
+         ,cccc,cccccccccccc;;:ccccccc::;:ldc.'.     ,OMMMMMM;d0WMMMMMW; :,  ..   OMMMMN.   
+        ;cccc:cccccccccccccccc:;';oO0KNMMW;  XK ,xd.  kMMMWoXMMMMMMMW.  '. dMM,   WMMNx.   
+       ,cccccccccccccccccccccccc;c:;lx0WM'   o, OMMd  'W0d;;cx0KNMMMk   ';  ..    ll;.     
+      .cccccccccccccccccccccccccc:::::c;:... ..  .....';;:;:ccc:;;:::'.....'',;ccc,        
+      ccccccccccccccccccccccccccccccc:::::::::::::::::;,;cccccccccccccccccccccc:'.         
+     :cccccccccccccccccccccccccccccccccccccccccccccc;;:ccccccc:::;::::::::::..             
+    ;cccccccccccccccccccccccccccccccccccccccccc:::::ccccccccccccc:;:::cccccc'              
+  .:ccccccccccccccccccccccccccccccccccccccccc::cccccccccccccccccccccccccccccc:.            
+ .ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc:.          
+ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.         
+.cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc:         
+ ccccccccccccccccccccccccccccc;,,,,,,,,,,,,,;:cccccccccccccccccccccccccccccccccccc'        
+ ,cccccccccccccccccccccccccc,,;::::::::::::::;,,,;;;;;;::ccccccccccccccc:::;;;;,,,::       
+  ccccccccccccccccccccccccc.::::;;;;;;;;;;;;;;::::::::;;;,,,,,,,,,,,,,,,;;;::::::::.       
+  .cccccccccccccccccccccccc.::::::::::::::::::;;;;;;;;:::::::::::::::::::::;;;;;.          
+   ,cccccccccccccccccc,ccccc;,,,,,,,,,,,,,;::::::::::;;;;;;;;;;;;;;;;;;;;;;:::::           
+    .:ccccccccccccccccc;:ccccccccccccccccc:;;;,,,,,,,,,,,;;;::::::::::::::::;'.            
+      .;ccccccccccccccccc::cccccccccccccccccccccccccccccc::;;;;;;;;;;;;;;;.                
+     ....';:ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc;.                  
+     '''''.',;:::::::cccccccccccccccccccccccccccccccccccccccccccccc;'.                     
+     ''''''''.',,:cc::::::::::::ccccccccccccccccccccccccccccc:,..                          
+     ''''''''''''...',,;:cccccc::::::::::::::::::::::::::::,'.                             
+     '''''''''''''''''''...''',,;;:cccccccccccccccccc:;,,'..'''..                          
+     '''''''''''''''''''''''''''''...''''',,,,'''''...'''''''''''''.                       
+     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''.                     
+     ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''.                   
+     .....................................................................
+"""
+    print(pepe + "\n" + "No new leads, check back later, player.")
     exit()
 requester = ws_live.acell('C2').value
-leads_leftp = wsp.acell("E1").value
-leads_lefta = wsp.acell("E1").value
+leads_leftp = int(wsp.acell("E1").value)
+leads_leftp += 1
+leads_lefta = int(wsa.acell("E1").value)
+leads_lefta += 1
 
 # remove all empty values from data frame by replacing them with NaN and then dropping all cells with Nan value. inplace=True specifies that the cells will be replaced as opposed to appended I guess.
 values[0].replace('', np.nan, inplace=True)
@@ -257,20 +300,20 @@ elif bigtrip == "y" or "test":
 if bigtrip == "test":
     pass
 if bigtrip == "y":
-    append += 1
+    appenda += 1
     stepper = open("step.py", "w")
     writethis = f"""
-    stepp = {appendp}
-    stepa = {appenda}
-    """
+stepp = {appendp}
+stepa = {appenda}
+"""
     stepper.write(writethis)
     stepper.close()
 elif bigtrip == "n":
-    append += 1
+    appendp += 1
     stepper = open("step.py", "w")
     writethis = f"""
-    stepp = {appendp}
-    stepa = {appenda}
-    """
+stepp = {appendp}
+stepa = {appenda}
+"""
     stepper.write(writethis)
     stepper.close()
