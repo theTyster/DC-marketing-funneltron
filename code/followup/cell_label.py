@@ -62,9 +62,9 @@ class unquote:
         return replace
 
 
-#Names marks the designated line on the gsheet the designated color.
+#Marks the designated line on the gsheet the designated color.
 def paint(line, color):
-    format_cell_range(ws, f"A{line}:AVU{line}", color)
+    format_cell_range(ws, f"B{line}:AVU{line}", color)
 
 '''
 Considers whether anyone of the keywords listed above are in the email. 

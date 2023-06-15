@@ -33,6 +33,9 @@ values.dropna(subset=[0], inplace=True)
 # drop indices. So that "values" is only the raw data formatted as a list.
 values = values.drop(values.index[0])
 
+#Prints the form data into std out to make it easier to determine who the data should go to.
+print(values)
+
 from step import *
 # add a column header, hide the index, and export to HTML
 values.rename(columns = {0:f"<p style='color: darkgreen;'>Performance and Travel Form Response #{step}</p>"}, inplace=True)
@@ -57,7 +60,6 @@ s.login(username, password)
 msg = MIMEMultipart()
 
 ## Function that determines who should be coppied on the resulting Email.
-
 def censor():
     global bigtrip
 
@@ -99,7 +101,8 @@ msg['Subject'] = f"Performance and Travel Form: Lead #{step} from {requester}"
 data = open("email.html", "r").read()
 
 #Email Body Content
-message = data.format(html_table = html_table, step = step)
+sheet_link = f"https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit#gid=1008713311&range=A{step}"
+message = data.format(html_table = html_table, step = step, sheet_link = sheet_link)
 
 #Add Message To Email Body
 msg.attach(MIMEText(message, 'html'))
@@ -138,6 +141,7 @@ elif bigtrip == "y":
 # Move a cell from one sheet to another with A1 Notation.
 mover = ws_live.acell('B2').value
 ws.update(f'B{append}', mover)
+set_row_height(ws, f'{step}', 21)
 
 # Deletes the copied row mentioned in line 87 from ws1
 ws_live.delete_rows(2, 2)

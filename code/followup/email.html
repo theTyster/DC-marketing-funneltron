@@ -23,7 +23,7 @@ form  input {{
 <form action="https://docs.google.com/forms/d/1b3wDerCr7vUCwbQ3sIulGc44_wYqAVJDLgha3ifSwhA/edit#responses">
 	<input type="submit" value="View the Google Form this came from." /> 
 </form>
-<form action=f"https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit#gid=1008713311&range=A{step}">
+<form action={sheet_link}>
 	<input type="submit" value="View the spreadsheet data." /> 
 </form>
 <br>
@@ -42,7 +42,7 @@ form  input {{
     <li>Building #{step}</li>
     <li>Sent #{step}</li>
     <li>Signed #{step}</li>
-    <li>Lost #{step}</li> <li>Contacted #{step}</li> </ul> <p>Corey will then update the Google Sheet with the correct color. You are welcome to view the <a href="https://docs.google.com/spreadsheets/d/137HKP532tC3Y5zLl2igEenJl5IQChWVduow7Shh8ANk/edit?usp=sharing">spreadsheet</a> anytime to view your overall progress with these tasks.</p>
+    <li>Lost #{step}</li> <li>Contacted #{step}</li> </ul> <p>Corey will then update the Google Sheet with the correct color. You are welcome to view the <a href={sheet_link}>spreadsheet</a> anytime to view your overall progress with these tasks.</p>
 <p>A few things to note about corey:</p>
 <ul>
     <li>Responses do not need to be case-sensitive. They do need to be spelled and spaced correctly and include the '#'.</li>
