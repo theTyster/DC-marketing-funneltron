@@ -3,23 +3,28 @@
 <head>
 <style>
 
-body {{
+.body {{
 	width: auto;
-	background: conic-gradient(from 180deg at 50% 33%, #b1ecff, 120deg, #b1c5ff, 240deg, #b1ffeb, 350deg, #b1ecff);
-	margin-left: 25%;
-	margin-right: 25%;
+	background: radial-gradient(farthest-corner at 40px 40px, #f35 0%, #43e 100%);
+	padding: 5%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
 }}
 .email {{ 
 	padding: 50px;
 	background-color: white;
 	border-radius: 10px;
+	margin-right: 25%;
+	margin-left: 25%;
 }}
 .g-form {{
 	background-color: darkblue;
 	color: white;
 	padding: 7px;
 	border-radius: 10px;
-	width: 400px;
+	width: 40px;
 	margin-left: 25%;
 	margin-right: 25%;
 }}
@@ -28,7 +33,7 @@ body {{
 	color: white;
 	padding: 7px;
 	border-radius: 10px;
-	width: 400px;
+	width: 40px;
 	margin-left: 25%;
 	margin-right: 25%;
 }}
@@ -37,7 +42,7 @@ body {{
 	color: white;
 	padding: 7px;
 	border-radius: 10px;
-	width: 400px;
+	width: 40px;
 	margin-left: 25%;
 	margin-right: 25%;
 }}
@@ -54,7 +59,7 @@ body {{
 
 </style>
 </head>
-<body>
+<div class="body">
 <div class="email">
 <h1>We have a new lead!</h1><br>
 <h2 style="text-align: center;">{school}</h2>
@@ -94,5 +99,5 @@ body {{
 <br>
 <p>Contact <a href="mailto:***REMOVED***">Ty</a> if you have any suggestions or questions.</p>
 </div>
-</body>
+</div>
 </html>
