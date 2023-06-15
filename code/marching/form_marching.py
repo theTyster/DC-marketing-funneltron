@@ -62,17 +62,17 @@ def censor():
     if bigtrip == "y":
     
         recipients = ["***REMOVED***", "alan.hanna@***REMOVED***.com", "***REMOVED***"]
-        print("Sending to Ty, Alan and Porsha")
+        print("Sending to Ty, Alan and Amy")
     
     elif bigtrip == "n":
     
-        recipients = ["***REMOVED***", "***REMOVED***"]
-        print("Sending to Ty, Porsha and Leanna")
+        recipients = ["***REMOVED***", "Amy.locke@***REMOVED***.com"]
+        print("Sending to Ty, Amy")
 
     elif bigtrip == "":
 
-        recipients = ["***REMOVED***", "***REMOVED***"]
-        print("Sending to Ty and Porsha")
+        recipients = ["***REMOVED***", "Amy.locke@***REMOVED***.com"]
+        print("Sending to Ty and Amy")
     
     elif bigtrip == "test":
         recipients =["***REMOVED***"]

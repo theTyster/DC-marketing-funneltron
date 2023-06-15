@@ -61,14 +61,14 @@ msg = MIMEMultipart()
 def censor():
     global bigtrip
 
-    bigtrip = input("Should Jon be included on this? (y/N) \n")
+    bigtrip = input("Is this a team 3 form?")
 
     global recipients
 
     if bigtrip == "y":
     
-        recipients = ["***REMOVED***", "***REMOVED***@***REMOVED***.com", "***REMOVED***"]
-        print("Sending to Ty, Jon and Porsha")
+        recipients = ["***REMOVED***", "***REMOVED***"]
+        print("Sending to Ty and Amy")
     
     elif bigtrip == "n":
     
